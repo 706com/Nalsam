@@ -1,0 +1,13 @@
+package com.example.nalsam;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class NalsamApplicationTests {
+
+    @Test
+    void contextLoads() {
+    }
+
+}
