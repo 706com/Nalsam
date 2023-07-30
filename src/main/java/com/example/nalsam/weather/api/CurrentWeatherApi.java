@@ -22,22 +22,35 @@
 ////                                                            @Query("ny") Integer pointY);
 //}
 
-package com.example.nalsam.controller.weather;
+package com.example.nalsam.weather.api;
 
-import com.example.nalsam.controller.weather.CurrentWeatherDTO;
+import com.example.nalsam.weather.dto.CurrentWeatherDTO;
 import retrofit2.Call;
 import retrofit2.http.*;
 
-import java.net.URLEncoder;
-
 
 public interface CurrentWeatherApi {
-//    String serviceKey = "R7wL2RYTuUBizIPLQ0KMI4HRlHfs/e9wMoomK7bqFStjVM+kUjgP6pJRe/EOUVs36oPJkJfQ26BR9Fw9WHXBEw==";
-    String serviceKey = "R7wL2RYTuUBizIPLQ0KMI4HRlHfs%2Fe9wMoomK7bqFStjVM%2BkUjgP6pJRe%2FEOUVs36oPJkJfQ26BR9Fw9WHXBEw%3D%3D";
 
-    @GET("getUltraSrtNcst?serviceKey="+ serviceKey + "&dataType=json&pageNo=1&numOfRows=100")
-    Call<CurrentWeatherDTO.GetCurrentWeatherResponse> getCurrentWeather(@Query("base_date") String date,
+    @GET("getUltraSrtNcst")
+    Call<CurrentWeatherDTO.GetCurrentWeatherResponse> getCurrentWeather(@Query("serviceKey")String serviceKey,
+                                                                        @Query("dataType") String dataType,
+                                                                        @Query("pageNo")int pageNo,  //61
+                                                                        @Query("numOfRows")int numOfRows,
+                                                                        @Query("base_date") String date,
                                                                         @Query("base_time") String time,
                                                                         @Query("nx")String nx,  //61
                                                                         @Query("ny")String ny); //125
+
+
 }
+
+/*
+    @GET("getUltraSrtNcst)?serviceKey="+ serviceKey + "&dataType=json&pageNo=1&numOfRows=100")
+    Call<CurrentWeatherDTO.GetCurrentWeatherResponse> getCurrentWeather(@Query("serviceKey")String serviceKey,
+                                                                        @Query("base_date") String date,
+                                                                        @Query("base_time") String time,
+                                                                        @Query("nx")String nx,  //61
+                                                                        @Query("ny")String ny); //125
+
+
+ */

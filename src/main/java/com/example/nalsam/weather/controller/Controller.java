@@ -1,11 +1,11 @@
-package com.example.nalsam.controller;
+package com.example.nalsam.weather.controller;
 
-import com.example.nalsam.controller.airquality.AirQualityDTO;
-import com.example.nalsam.controller.airquality.AirQualityService;
-import com.example.nalsam.controller.weather.CurrentWeatherDTO;
-import com.example.nalsam.controller.weather.CurrentWeatherService;
+import com.example.nalsam.airquality.dto.AirQualityDTO;
+import com.example.nalsam.airquality.service.AirQualityService;
 import com.example.nalsam.database.LocationInfoDTO;
 import com.example.nalsam.database.LocationInfoRepository;
+import com.example.nalsam.weather.dto.CurrentWeatherDTO;
+import com.example.nalsam.weather.service.CurrentWeatherService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;

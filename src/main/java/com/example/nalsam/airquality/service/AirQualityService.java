@@ -1,6 +1,6 @@
-package com.example.nalsam.controller.airquality;
+package com.example.nalsam.airquality.service;
 
-import com.example.nalsam.controller.airquality.AirQualityDTO;
+import com.example.nalsam.airquality.dto.AirQualityDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class AirQualityService {
-    private final com.example.nalsam.controller.airquality.AirQualityApiCaller AirQualityApiCaller;
+    private final com.example.nalsam.airquality.api.AirQualityApiCaller AirQualityApiCaller;
 
     public AirQualityDTO.GetAirQualityResponse getAirQualityInfo(String sidoCode) {
 

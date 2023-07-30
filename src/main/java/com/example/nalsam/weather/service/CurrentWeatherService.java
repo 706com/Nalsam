@@ -1,13 +1,12 @@
-package com.example.nalsam.controller.weather;
+package com.example.nalsam.weather.service;
 
-import com.example.nalsam.controller.airquality.AirQualityDTO;
+import com.example.nalsam.weather.dto.CurrentWeatherDTO;
+import com.example.nalsam.weather.api.CurrentWeatherApiCaller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 @Slf4j
