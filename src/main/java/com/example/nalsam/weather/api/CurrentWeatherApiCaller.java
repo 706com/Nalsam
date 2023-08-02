@@ -17,7 +17,7 @@ public class CurrentWeatherApiCaller {
     private final com.example.nalsam.weather.api.CurrentWeatherApi CurrentWeatherApi;
 
     @Value("${CURRENT-WEATHER-KEY}")
-    private String SERICE_KEY;
+    private String SERVICE_KEY;
 
     public CurrentWeatherApiCaller() {
         ObjectMapper objectMapper = new ObjectMapper();
@@ -33,7 +33,7 @@ public class CurrentWeatherApiCaller {
 
     public CurrentWeatherDTO.GetCurrentWeatherResponse getCurrentWeather(String date , String time , String nx , String ny) {             // Todo : nx,ny 작업
         try {
-            var call = CurrentWeatherApi.getCurrentWeather(SERICE_KEY,"json",1,100,date, time, nx, ny);               // Todo : nx,ny 작업
+            var call = CurrentWeatherApi.getCurrentWeather(SERVICE_KEY,"json",1,100,date, time, nx, ny);               // Todo : nx,ny 작업
             var response = call.execute().body();
 
             if (response == null || response.getResponse() == null) {
