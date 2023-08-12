@@ -1,5 +1,1 @@
-test - Kwakk
-
-
-test
-khkhkh
+kwak - git init /main
