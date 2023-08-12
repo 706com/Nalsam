@@ -7,6 +7,11 @@ build/
 /src/main/resources/application.properties
 /src/main/resources/application-API-KEY.properties
 
+### RESOURCES ###
+
+/src/main/resources/application.properties
+/src/main/resources/application-API-KEY.properties
+
 ### STS ###
 .apt_generated
 .classpath

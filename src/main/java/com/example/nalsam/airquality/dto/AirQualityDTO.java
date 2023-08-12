@@ -1,4 +1,4 @@
-package com.example.nalsam.controller.airquality;
+package com.example.nalsam.airquality.dto;
 
 import lombok.Getter;
 import lombok.Setter;

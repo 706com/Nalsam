@@ -1,4 +1,4 @@
-package com.example.nalsam.controller.weather;
+package com.example.nalsam.weather.dto;
 
 import lombok.Getter;
 import lombok.Setter;

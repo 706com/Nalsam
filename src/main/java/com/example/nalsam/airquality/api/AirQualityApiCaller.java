@@ -1,8 +1,10 @@
-package com.example.nalsam.controller.airquality;
+package com.example.nalsam.airquality.api;
 
+import com.example.nalsam.airquality.dto.AirQualityDTO;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
@@ -12,7 +14,10 @@ import java.io.IOException;
 @Slf4j
 @Component
 public class AirQualityApiCaller {
-    private final com.example.nalsam.controller.airquality.AirQualityApi AirQualityApi;
+    private final com.example.nalsam.airquality.api.AirQualityApi AirQualityApi;
+
+    @Value("${AIR-QUALITY-KEY}")
+    private String SERVICE_KEY;
 
     public AirQualityApiCaller() {
         ObjectMapper objectMapper = new ObjectMapper();
@@ -28,7 +33,7 @@ public class AirQualityApiCaller {
 
     public AirQualityDTO.GetAirQualityResponse getAirQuality(String sidoCode) {
         try {
-            var call = AirQualityApi.getAirQuality(sidoCode);
+            var call = AirQualityApi.getAirQuality(SERVICE_KEY, "json", 700, 1, "1.0", sidoCode);
             var response = call.execute().body();
 
             if (response == null || response.getResponse() == null) {
