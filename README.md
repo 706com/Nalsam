@@ -5,4 +5,4 @@ git pull 순서
 
 or 
 
-git pull {origin/master} = git fetch + merge (이 방법은 최대한 지양하기)
+git pull {origin/master} = git fetch + merge (이 방법은 최대한 지양하기 ! )
