@@ -26,10 +26,6 @@ public class Controller {
 //        return airQualityService.getAirQualityInfo();
 //    }
 
-    @GetMapping("/{sidoCode}")
-    public AirQualityDTO.GetAirQualityResponse getAirQualityInfo(@PathVariable("sidoCode") String sidoCode) {
-        return airQualityService.getAirQualityInfo(sidoCode);
-    }
 
     @GetMapping("/test")
     public List<LocationInfoDTO> findAllMember(){
