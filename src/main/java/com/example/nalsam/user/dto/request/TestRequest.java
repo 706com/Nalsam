@@ -1,4 +1,4 @@
-package user.domain;
+package com.example.nalsam.user.dto.request;
 
 import lombok.Builder;
 import lombok.Getter;

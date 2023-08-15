@@ -1,13 +1,13 @@
-package user.service;
+package com.example.nalsam.user.service;
 
+import com.example.nalsam.user.dto.request.TestRequest;
+import com.example.nalsam.user.dto.request.UserRequest;
+import com.example.nalsam.user.repository.TestUserRepository;
+import com.example.nalsam.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import user.domain.Test;
-import user.domain.TestRequest;
-import user.domain.User;
-import user.domain.UserRequest;
-import user.repository.TestUserRepository;
-import user.repository.UserRepository;
+import com.example.nalsam.user.domain.Test;
+import com.example.nalsam.user.domain.User;
 
 import java.time.LocalDateTime;
 

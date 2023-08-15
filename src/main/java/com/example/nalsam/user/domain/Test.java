@@ -1,4 +1,4 @@
-package user.domain;
+package com.example.nalsam.user.domain;
 
 import lombok.AccessLevel;
 import lombok.Builder;

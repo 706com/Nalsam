@@ -18,7 +18,7 @@ public class WebSecurityConfig {
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().mvcMatchers("/user/**");
+        return (web) -> web.ignoring().mvcMatchers("/com/example/nalsam/user/**");
 
     }
 
@@ -30,7 +30,7 @@ public class WebSecurityConfig {
 //                .and()
                 .authorizeRequests(authorizeRequests ->
                         authorizeRequests
-                                .antMatchers("/user/**").permitAll() // /user/save 엔드포인트에 대한 POST 접근 허용
+                                .antMatchers("/com/example/nalsam/user/**").permitAll() // /user/save 엔드포인트에 대한 POST 접근 허용
 //                                .antMatchers("/api/private").authenticated() // 다른 개인 엔드포인트에 대해 인증 요구
                                 .anyRequest().authenticated()
                 )

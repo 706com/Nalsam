@@ -1,4 +1,4 @@
-package user.domain;
+package com.example.nalsam.user.dto.request;
 
 
 import lombok.AccessLevel;
@@ -12,13 +12,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Entity(name = "user_info")
-public class User {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
-    private Long userID;
+public class UserRequest {
 
     @Column(name = "login_id")
     private String loginId;
@@ -28,7 +22,6 @@ public class User {
     @Column(name = "user_name")
     private String userName;
 
-    @Column(name = "birth_date")
     private LocalDate birthDate;
 
     @Column(name = "is_male")
@@ -36,28 +29,17 @@ public class User {
 
     private String location;
 
-    @Column(name = "oxygen_saturation")
-    private Integer oxygenSaturation;
-
     private String symptom;
-
-    private LocalDateTime createDateTime;
-
-    private LocalDateTime updateDateTime;
 
 
     @Builder
-    public User(Long userID, String loginId, String password, String userName, LocalDate birthDate, Integer isMale, String location, Integer oxygenSaturation, String symptom, LocalDateTime createDateTime, LocalDateTime updateDateTime) {
-        this.userID = userID;
+    public UserRequest(String loginId, String password, String userName,LocalDate birthDate, Integer isMale, String location, String symptom) {
         this.loginId = loginId;
         this.password = password;
         this.userName = userName;
         this.birthDate = birthDate;
         this.isMale = isMale;
         this.location = location;
-        this.oxygenSaturation = oxygenSaturation;
         this.symptom = symptom;
-        this.createDateTime = createDateTime;
-        this.updateDateTime = updateDateTime;
     }
 }
