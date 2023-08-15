@@ -16,9 +16,9 @@ import java.time.LocalDateTime;
 public class User {
 
     @Id
+    @Column(name = "user_id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
-    private Long userID;
+    private Long userId;
 
     @Column(name = "login_id")
     private String loginId;
@@ -29,7 +29,7 @@ public class User {
     private String userName;
 
     @Column(name = "birth_date")
-    private LocalDate birthDate;
+    private String birthDate;
 
     @Column(name = "is_male")
     private Integer isMale;
@@ -41,14 +41,16 @@ public class User {
 
     private String symptom;
 
-    private LocalDateTime createDateTime;
+    @Column(name = "create_date_time")
+    private LocalDateTime createDateTime; // == create_data_time
 
+    @Column(name ="update_date_time")
     private LocalDateTime updateDateTime;
 
 
     @Builder
-    public User(Long userID, String loginId, String password, String userName, LocalDate birthDate, Integer isMale, String location, Integer oxygenSaturation, String symptom, LocalDateTime createDateTime, LocalDateTime updateDateTime) {
-        this.userID = userID;
+    public User(Long userId, String loginId, String password, String userName, String birthDate, Integer isMale, String location, Integer oxygenSaturation, String symptom, LocalDateTime createDateTime, LocalDateTime updateDateTime) {
+        this.userId = userId;
         this.loginId = loginId;
         this.password = password;
         this.userName = userName;

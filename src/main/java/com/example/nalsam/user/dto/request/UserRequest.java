@@ -22,7 +22,7 @@ public class UserRequest {
     @Column(name = "user_name")
     private String userName;
 
-    private LocalDate birthDate;
+    private String birthDate;
 
     @Column(name = "is_male")
     private Integer isMale;
@@ -33,7 +33,7 @@ public class UserRequest {
 
 
     @Builder
-    public UserRequest(String loginId, String password, String userName,LocalDate birthDate, Integer isMale, String location, String symptom) {
+    public UserRequest(String loginId, String password, String userName,String birthDate, Integer isMale, String location, String symptom) {
         this.loginId = loginId;
         this.password = password;
         this.userName = userName;
