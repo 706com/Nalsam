@@ -1,4 +1,4 @@
-git pull 순서
+★ 반드시 fetch/merge 혹은 pull 하고 작업하기
 
 1. git fetch {origin/master}
 2. git merge {origin/master}
