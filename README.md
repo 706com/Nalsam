@@ -1,8 +1,2 @@
-git pull 순서
-
-1. git fetch {origin/master}
-2. git merge {origin/master}
-
-or 
-
-git pull {origin/master} = git fetch + merge (이 방법은 최대한 지양하기)
+jenog1
+- 대기질api : 응답결과 수정, 구 검색 기능 개발
