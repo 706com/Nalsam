@@ -62,4 +62,9 @@ public class User {
         this.createDateTime = createDateTime;
         this.updateDateTime = updateDateTime;
     }
+
+    public void updatePassword(String password, LocalDateTime updateDateTime) {
+        this.password = password;
+        this.updateDateTime = updateDateTime;
+    }
 }
