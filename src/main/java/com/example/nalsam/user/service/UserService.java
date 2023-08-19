@@ -109,7 +109,7 @@ public class UserService {
             throw new PasswordNotCorrectException();
         }
 
-        if(request.getNewPassword().equals(request.getNewPassword())){
+        if(request.getNewPassword().equals(request.getAgainNewPassword())){
             User user = userRepository.findByLoginId(request.getLoginId()).get();
             LocalDateTime now = LocalDateTime.now();
             user.updatePassword(request.getNewPassword(), now);
