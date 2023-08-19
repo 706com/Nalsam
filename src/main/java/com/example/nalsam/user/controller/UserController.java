@@ -2,6 +2,7 @@ package com.example.nalsam.user.controller;
 
 import com.example.nalsam.user.domain.User;
 import com.example.nalsam.user.dto.request.TestRequest;
+import com.example.nalsam.user.dto.request.UserDeletionRequest;
 import com.example.nalsam.user.dto.request.UserPasswordRequest;
 import com.example.nalsam.user.dto.request.UserRequest;
 import com.example.nalsam.user.dto.response.UserResponse;
@@ -55,6 +56,15 @@ public class UserController {
     public ResponseEntity<Void> updateUserPassword(@RequestBody UserPasswordRequest request){
 
         userService.updateUserPassword(request);
+
+        return ResponseEntity.noContent().build();
+    }
+
+    // < 회원 삭제 API >
+    // 아이디 패스워드 일치시.
+    public ResponseEntity<Void> deleteUser(@RequestBody UserDeletionRequest request){
+
+        userService.deleteUser(request);
 
         return ResponseEntity.noContent().build();
     }

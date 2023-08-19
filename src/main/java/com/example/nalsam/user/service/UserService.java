@@ -1,9 +1,12 @@
 package com.example.nalsam.user.service;
 
 import com.example.nalsam.user.dto.request.TestRequest;
+import com.example.nalsam.user.dto.request.UserDeletionRequest;
 import com.example.nalsam.user.dto.request.UserPasswordRequest;
 import com.example.nalsam.user.dto.request.UserRequest;
 import com.example.nalsam.user.dto.response.UserResponse;
+import com.example.nalsam.user.exception.PasswordNotCorrectException;
+import com.example.nalsam.user.exception.UserNotFoundException;
 import com.example.nalsam.user.repository.TestUserRepository;
 import com.example.nalsam.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -61,7 +64,7 @@ public class UserService {
     }
 
     // 회원 조회 기능
-    // 로그인ID 로 조회하기.
+    //  로그인ID 로 조회하기.
     public UserResponse showUserInfoById(String loginId){
 
         User user = userRepository.findByLoginId(loginId).orElseThrow();
@@ -77,7 +80,7 @@ public class UserService {
     }
 
     // 회원 조회 기능
-    // 모든 회원 보기
+    //  모든 회원 조회하기.
     public List<UserResponse> showUserInfoAll(){
         List<User> getUsers = userRepository.findAll();
 
@@ -99,11 +102,11 @@ public class UserService {
     @Transactional
     public void updateUserPassword(UserPasswordRequest request){
         if(!userRepository.existsByLoginId(request.getLoginId())){
-            throw new IllegalArgumentException("해당 회원 ID 없음");
+            throw new UserNotFoundException();
         }
 
         else if(!request.getPassword().equals(userRepository.findByLoginId(request.getLoginId()).get().getPassword())){
-            throw new IllegalArgumentException("비밀번호 불일치");
+            throw new PasswordNotCorrectException();
         }
 
         if(request.getNewPassword().equals(request.getNewPassword())){
@@ -111,6 +114,21 @@ public class UserService {
             LocalDateTime now = LocalDateTime.now();
             user.updatePassword(request.getNewPassword(), now);
         }
+    }
+
+    // 회원 삭제 기능
+    public void deleteUser(UserDeletionRequest request){
+        if(!userRepository.existsByLoginId(request.getLoginId())){
+            throw new UserNotFoundException();
+        }
+
+        else if(!request.getPassword().equals(userRepository.findByLoginId(request.getLoginId()).get().getPassword())){
+            throw new PasswordNotCorrectException();
+        }
+
+        User user = userRepository.findByLoginId(request.getLoginId()).get();
+
+        userRepository.delete(user);
     }
 
 }
