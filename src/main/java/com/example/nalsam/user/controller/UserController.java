@@ -62,6 +62,7 @@ public class UserController {
 
     // < 회원 삭제 API >
     // 아이디 패스워드 일치시.
+    @DeleteMapping("/delete")
     public ResponseEntity<Void> deleteUser(@RequestBody UserDeletionRequest request){
 
         userService.deleteUser(request);
