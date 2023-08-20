@@ -1,6 +1,6 @@
-package com.example.nalsam.weather.api;
+package weather.api;
 
-import com.example.nalsam.weather.dto.CurrentWeatherDTO;
+import weather.dto.CurrentWeatherDTO;
 import retrofit2.Call;
 import retrofit2.http.*;
 

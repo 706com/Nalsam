@@ -1,6 +1,5 @@
 package com.example.nalsam.airquality.api;
 
-import com.example.nalsam.airquality.dto.AirQualityDTO;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
@@ -8,12 +7,12 @@ import retrofit2.http.Query;
 public interface AirQualityApi {
 
     @GET("getCtprvnRltmMesureDnsty")
-    Call<AirQualityDTO.GetAirQualityResponse> getAirQuality(@Query("serviceKey") String serviceKey,
-                                                            @Query("returnType") String returnType,
-                                                            @Query("numOfRows") int numOfRows,
-                                                            @Query("pageNo") int pageNo,
-                                                            @Query("ver") String ver,
-                                                            @Query("sidoName") String sidoCode);
+    Call<AirQualityData.GetAirQualityResponse> getAirQuality(@Query("serviceKey") String serviceKey,
+                                                             @Query("returnType") String returnType,
+                                                             @Query("numOfRows") int numOfRows,
+                                                             @Query("pageNo") int pageNo,
+                                                             @Query("ver") String ver,
+                                                             @Query("sidoName") String sidoCode);
 }
 
 

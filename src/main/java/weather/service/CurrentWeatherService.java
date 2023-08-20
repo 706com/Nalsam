@@ -1,7 +1,7 @@
-package com.example.nalsam.weather.service;
+package weather.service;
 
-import com.example.nalsam.weather.dto.CurrentWeatherDTO;
-import com.example.nalsam.weather.api.CurrentWeatherApiCaller;
+import weather.dto.CurrentWeatherDTO;
+import weather.api.CurrentWeatherApiCaller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
