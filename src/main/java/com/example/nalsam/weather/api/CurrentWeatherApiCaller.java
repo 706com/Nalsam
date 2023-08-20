@@ -1,6 +1,6 @@
-package weather.api;
+package com.example.nalsam.weather.api;
 
-import weather.dto.CurrentWeatherDTO;
+import com.example.nalsam.weather.dto.CurrentWeatherDTO;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +14,7 @@ import java.io.IOException;
 @Slf4j
 @Component
 public class CurrentWeatherApiCaller {
-    private final weather.api.CurrentWeatherApi CurrentWeatherApi;
+    private final CurrentWeatherApi CurrentWeatherApi;
 
     @Value("${CURRENT-WEATHER-KEY}")
     private String SERVICE_KEY;

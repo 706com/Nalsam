@@ -69,17 +69,17 @@ public class AirQualityApiCaller {
         return items.stream()
                 .map(item -> new AirQualityInfo.GuAirQualityInfo(
                         item.getStationName(),
-                        replaceDashWithDefaultValue(item.getSo2Value()),
-                        replaceDashWithDefaultValue(item.getCoValue()),
-                        replaceDashWithDefaultValue(item.getPm10Value()),
-                        replaceDashWithDefaultValue(item.getPm25Value()),
-                        replaceDashWithDefaultValue(item.getNo2Value()),
-                        replaceDashWithDefaultValue(item.getO3Value()))
+                        replaceDefaultValue(item.getSo2Value()),
+                        replaceDefaultValue(item.getCoValue()),
+                        replaceDefaultValue(item.getPm10Value()),
+                        replaceDefaultValue(item.getPm25Value()),
+                        replaceDefaultValue(item.getNo2Value()),
+                        replaceDefaultValue(item.getO3Value()))
                 )
                 .collect(Collectors.toList());
     }
 
-    private String replaceDashWithDefaultValue(String value) {
+    private String replaceDefaultValue(String value) {
         if(value == null || value.equals("-")){
             return "0";
         }

@@ -1,10 +1,11 @@
-package weather.controller;
+package com.example.nalsam.weather.controller;
 
 import com.example.nalsam.airquality.service.AirQualityService;
 import com.example.nalsam.database.LocationInfoDTO;
 import com.example.nalsam.database.LocationInfoRepository;
-import weather.dto.CurrentWeatherDTO;
-import weather.service.CurrentWeatherService;
+
+import com.example.nalsam.weather.dto.CurrentWeatherDTO;
+import com.example.nalsam.weather.service.CurrentWeatherService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -19,12 +20,6 @@ public class Controller {
     private final CurrentWeatherService currentWeatherService;
 
     private final LocationInfoRepository locationInfoRepository;
-
-//    @GetMapping("")
-//    public AirQualityDto.GetAirQualityResponse getAirQualityInfo() {
-//        return airQualityService.getAirQualityInfo();
-//    }
-
 
     @GetMapping("/test")
     public List<LocationInfoDTO> findAllMember(){

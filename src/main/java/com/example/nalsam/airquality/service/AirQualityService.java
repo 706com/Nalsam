@@ -18,17 +18,11 @@ public class AirQualityService {
 
     public AirQualityInfo getAirQualityInfo(Double latitude, Double longitude) {
 
-//        var airQualityInfo = AirQualityApiCaller.getAirQuality(sidoCode);
-
         StationLocation nearestStation = findNearestStation(latitude, longitude);
         String sidoCode = nearestStation.getAddress().substring(0,2);
         System.out.println(sidoCode);
         var airQualityInfo = AirQualityApiCaller.getAir(sidoCode);
         if (nearestStation != null) {
-            System.out.println("Nearest Station Name: " + nearestStation.getStationName());
-            System.out.println("Nearest Station Latitude: " + nearestStation.getLatitude());
-            System.out.println("Nearest Station Longitude: " + nearestStation.getLongitude());
-            System.out.println("--------------------------------");
 
             return airQualityInfo.searchByGu(nearestStation.getStationName());
         }
@@ -53,10 +47,8 @@ public class AirQualityService {
     }
 
     private double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
-        // Radius of the Earth in kilometers
         final int R = 6371;
 
-        // Convert latitude and longitude from degrees to radians
         double latDistance = Math.toRadians(lat2 - lat1);
         double lonDistance = Math.toRadians(lon2 - lon1);
 
@@ -66,7 +58,6 @@ public class AirQualityService {
 
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
-        // Calculate the distance
         double distance = R * c;
 
         return distance;

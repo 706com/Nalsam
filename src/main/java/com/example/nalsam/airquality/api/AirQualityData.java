@@ -59,7 +59,6 @@ public class AirQualityData {
         private String stationName;
         private String dataTime;
 
-//        private Double khaiValue;
         private String so2Value;
         private String coValue;
         private String pm10Value;
@@ -67,28 +66,6 @@ public class AirQualityData {
         private String no2Value;
         private String o3Value;
 
-//        private String khaiGrade;
-//        private String so2Grade ;
-//        private String o3Grade ;
-//        private String no2Grade;
-//        private String pm25Grade;
-//        private String coGrade;
-//        private String pm10Grade ;
-
-
-//        private String so2Flag;
-//        private String coFlag;
-//        private String o3Flag;
-//        private String no2Flag;
-//        private String pm10Flag;
-//        private String pm25Flag;
-
-//        private String so2Grade = String.valueOf(AirQualityGradeUtil.getSo2Grade(so2Value));
-//        private String o3Grade = String.valueOf(AirQualityGradeUtil.getO3Grade(o3Value));
-//        private String no2Grade= String.valueOf(AirQualityGradeUtil.getNo2Grade(no2Value));;
-//        private String pm25Grade= String.valueOf(AirQualityGradeUtil.getPm25Grade(pm25Value));;
-//        private String coGrade= String.valueOf(AirQualityGradeUtil.getCoGrade(coValue));;
-//        private String pm10Grade= String.valueOf(AirQualityGradeUtil.getPm10Grade(pm10Value));;
 
     }
 }

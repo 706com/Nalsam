@@ -1,7 +1,7 @@
-package weather.service;
+package com.example.nalsam.weather.service;
 
-import weather.dto.CurrentWeatherDTO;
-import weather.api.CurrentWeatherApiCaller;
+import com.example.nalsam.weather.api.CurrentWeatherApiCaller;
+import com.example.nalsam.weather.dto.CurrentWeatherDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,6 @@ public class CurrentWeatherService {
     public CurrentWeatherDTO.GetCurrentWeatherResponse getCurrentWeatherInfo() {
 
         LocalDateTime dateTime = LocalDateTime.now();
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd HHmmss");
 
         String date = String.valueOf(dateTime.format(DateTimeFormatter.ofPattern("yyyyMMdd")));
         String time = String.valueOf(dateTime.format(DateTimeFormatter.ofPattern("HH"))+"00");
@@ -26,7 +25,6 @@ public class CurrentWeatherService {
         System.out.println("date : "+date);
         System.out.println("time : "+time);
 
-//        System.out.println(dateTime.format(formatter));
 
         var currentWeatherInfo = currentWeatherApiCaller.getCurrentWeather(date,time,"55","127");
         return currentWeatherInfo;
