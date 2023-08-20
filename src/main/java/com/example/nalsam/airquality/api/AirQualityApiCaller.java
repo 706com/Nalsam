@@ -1,6 +1,5 @@
 package com.example.nalsam.airquality.api;
 
-import com.example.nalsam.airquality.dto.AirQualityDTO;
 import com.example.nalsam.airquality.dto.AirQualityInfo;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -46,7 +45,6 @@ public class AirQualityApiCaller {
 
             if (response.getResponse().isSuccess()) {
                 log.info(response.toString());
-//                System.out.println("@@@@@@@@@@@");
                 return convert(response,sidoCode);
             }
 
@@ -57,12 +55,9 @@ public class AirQualityApiCaller {
             throw new RuntimeException(" getAirQuality API error 발생! errorMessage=" + e.getMessage());
         }
     }
-    private AirQualityInfo convert(AirQualityDTO.GetAirQualityResponse response,String sidoCode){
-        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+    private AirQualityInfo convert(AirQualityData.GetAirQualityResponse response, String sidoCode){
         var items = response.getResponse().getBody().getItems();
         var guList = convert(items);
-
-        System.out.println("여긴옴??");
 
         return AirQualityInfo.builder()
                 .sidoCode(sidoCode)
@@ -70,7 +65,7 @@ public class AirQualityApiCaller {
                 .build();
     }
 
-    private List<AirQualityInfo.GuAirQualityInfo> convert(List<AirQualityDTO.Item> items) {
+    private List<AirQualityInfo.GuAirQualityInfo> convert(List<AirQualityData.Item> items) {
         return items.stream()
                 .map(item -> new AirQualityInfo.GuAirQualityInfo(
                         item.getStationName(),
@@ -85,9 +80,10 @@ public class AirQualityApiCaller {
     }
 
     private String replaceDashWithDefaultValue(String value) {
-        return "-".equals(value) ? "0" : value;
+        if(value == null || value.equals("-")){
+            return "0";
+        }
+        return value;
     }
-
-
 
 }

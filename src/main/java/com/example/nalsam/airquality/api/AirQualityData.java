@@ -1,6 +1,5 @@
-package com.example.nalsam.airquality.dto;
+package com.example.nalsam.airquality.api;
 
-import com.example.nalsam.airquality.util.AirQualityGradeUtil;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -11,7 +10,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
-public class AirQualityDTO {
+public class AirQualityData {
     @Getter
     @Setter
     @ToString

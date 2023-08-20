@@ -1,4 +1,4 @@
-package com.example.nalsam.weather.dto;
+package weather.dto;
 
 import lombok.Getter;
 import lombok.Setter;
