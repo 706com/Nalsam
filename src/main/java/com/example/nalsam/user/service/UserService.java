@@ -1,9 +1,6 @@
 package com.example.nalsam.user.service;
 
-import com.example.nalsam.user.dto.request.TestRequest;
-import com.example.nalsam.user.dto.request.UserDeletionRequest;
-import com.example.nalsam.user.dto.request.UserPasswordRequest;
-import com.example.nalsam.user.dto.request.UserRequest;
+import com.example.nalsam.user.dto.request.*;
 import com.example.nalsam.user.dto.response.UserResponse;
 import com.example.nalsam.user.exception.PasswordNotCorrectException;
 import com.example.nalsam.user.exception.UserNotFoundException;
@@ -131,4 +128,21 @@ public class UserService {
         userRepository.delete(user);
     }
 
+    // 로그인 ID 로 회원 찾기.
+    public User findUserByLoginId(String userLoginId) {
+
+        return userRepository.findByLoginId(userLoginId).orElse(null);
+
+    }
+
+    public void checkUserInfo(LoginRequest request){
+        if(!userRepository.existsByLoginId(request.getLoginId())){
+            throw new UserNotFoundException();
+        }
+
+        else if(!request.getPassword().equals(userRepository.findByLoginId(request.getLoginId()).get().getPassword())){
+            throw new PasswordNotCorrectException();
+        }
+
+    }
 }
