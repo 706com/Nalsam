@@ -1,4 +1,4 @@
-package com.example.nalsam.weather.dto;
+package com.example.nalsam.weather.api;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -10,13 +10,14 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
-public class CurrentWeatherDTO {
+public class CurrentWeatherData {
     @Getter
     @Setter
     @ToString
     public static class GetCurrentWeatherResponse{
         private Response response;
     }
+
 
     @Getter
     @Setter
@@ -37,11 +38,11 @@ public class CurrentWeatherDTO {
     @Setter
     @ToString
     public static class Body{
-        private String dataType;
+//        private String dataType;
         private Items items;
-        private String pageNo;
-        private Integer numOfRows;
-        private Integer totalCount;
+//        private String pageNo;
+//        private Integer numOfRows;
+//        private Integer totalCount;
     }
 
     @Getter
@@ -52,22 +53,22 @@ public class CurrentWeatherDTO {
         private String resultMsg;
     }
 
+    @ToString
     @Getter
     @Setter
-    @ToString
-    private static class Items{
+    public static class Items{
         private List<Item> item;
     }
 
     @Getter
     @Setter
     @ToString
-    private static class Item{
-        private String baseDate;
-        private String baseTime;
+    public static class Item{
+//        private String baseDate;
+//        private String baseTime;
         private String category;
-        private String nx;
-        private String ny;
+//        private String nx;
+//        private String ny;
         private String obsrValue;
     }
 }

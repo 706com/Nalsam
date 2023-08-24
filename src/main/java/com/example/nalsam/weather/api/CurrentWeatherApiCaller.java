@@ -1,6 +1,6 @@
 package com.example.nalsam.weather.api;
 
-import com.example.nalsam.weather.dto.CurrentWeatherDTO;
+import com.example.nalsam.weather.dto.WeatherDto;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +10,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Component
@@ -31,7 +33,7 @@ public class CurrentWeatherApiCaller {
         this.CurrentWeatherApi = retrofit.create(CurrentWeatherApi.class);
     }
 
-    public CurrentWeatherDTO.GetCurrentWeatherResponse getCurrentWeather(String date , String time , String nx , String ny) {             // Todo : nx,ny 작업
+    public WeatherDto getCurrentWeather(String date , String time , String nx , String ny,String sido, String gu) {             // Todo : nx,ny 작업
         try {
             var call = CurrentWeatherApi.getCurrentWeather(SERVICE_KEY,"json",1,100,date, time, nx, ny);               // Todo : nx,ny 작업
             var response = call.execute().body();
@@ -42,8 +44,7 @@ public class CurrentWeatherApiCaller {
 
             if (response.getResponse().isSuccess()) {
                 log.info(response.toString());
-                System.out.println("SKrrrrrrrrrrrrrrr");
-                return response;
+                return convert(response,sido,gu);
             }
 
             throw new RuntimeException(" Weather 응답이 올바르지 않습니다. header=" + response.getResponse().getHeader());
@@ -52,5 +53,30 @@ public class CurrentWeatherApiCaller {
             log.error(e.getMessage(), e);
             throw new RuntimeException(" Weather API error 발생! errorMessage=" + e.getMessage());
         }
+    }
+
+    private WeatherDto convert(CurrentWeatherData.GetCurrentWeatherResponse response,String sido,String gu){
+
+        var item = response.getResponse().getBody().getItems().getItem();
+
+        var weaherList = convert(item);
+        return WeatherDto.builder()
+                .sido(sido)
+                .gu(gu)
+                .weatherInfoList(weaherList)
+                .build();
+
+    }
+
+    private List<WeatherDto.WeatherInfo> convert(List<CurrentWeatherData.Item> items) {
+        return items.stream()
+                .filter(item-> item.getCategory().equals("T1H")  || item.getCategory().equals("REH")
+                        || item.getCategory().equals("PTY") || item.getCategory().equals("RN1")
+                        || item.getCategory().equals("WSD"))
+                .map(item -> new WeatherDto.WeatherInfo(
+                        item.getCategory(),
+                        Double.valueOf(item.getObsrValue()))
+                )
+                .collect(Collectors.toList());
     }
 }
