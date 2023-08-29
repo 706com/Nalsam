@@ -135,6 +135,7 @@ public class UserService {
 
     }
 
+    // 아이디 비밀번호 체크. 오류시 exception 발생
     public void checkUserInfo(LoginRequest request){
         if(!userRepository.existsByLoginId(request.getLoginId())){
             throw new UserNotFoundException();

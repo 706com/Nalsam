@@ -3,49 +3,38 @@ package com.example.nalsam.user.controller;
 import com.example.nalsam.user.domain.User;
 import com.example.nalsam.user.dto.SessionConst;
 import com.example.nalsam.user.dto.request.LoginRequest;
-import com.example.nalsam.user.exception.UserNotFoundException;
-import com.example.nalsam.user.service.SessionService;
 import com.example.nalsam.user.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.lang.reflect.Member;
-import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
 //@RequestMapping("/login")
 //로그인 시 세션을 생성하여 home으로 보내주거나 로그아웃 시 세션을 삭제
 public class LoginController {
-
-//    private final LoginService loginService;
-
+    
     private final UserService userService;
-
-    private final SessionService sessionService;
-
+    
     // URL : / 요청 (home)을 처리 url.
-    //(1): 세션정보를 가져오기 위하여 request를 argument로 sessionManager.getSession를 호출한다.
+    //(1): 세션정보를 가져오기 위하여 request 로 요청
     @GetMapping("/")
     public String home(HttpServletRequest request, Model model) {
 
-        // (1): 세션정보를 가져오기 위하여 request를 argument로 sessionManager.getSession를 호출한다.
-        String userLoginId = sessionService.getSession(request);
+        // (1):  argument가 false : 세션이 있으면 세션을, 없다면 null을 return 한다.
+        HttpSession session = request.getSession(false);
 
-        // (2): (1)에서 유효한 Session을 찾지 못한 경우 mebmerId는 null이 되며, login 페이지로 이동시킨다.
-        if(userLoginId == null) {
+        // (2): (1)에서 유효한 Session을 찾지 못한 경우 userId는 null이 되며, login 페이지로 이동시킨다.
+        if(session == null) {
             return "login";
         }
 
-        // (3): (1)에서 유효한 Session을 통해 정상적인 memberId를 반환받았을 경우, user 정보를 찾는다.
+        // (3): (1)에서 유효한 Session을 통해 정상적인 userId를 반환받았을 경우, user 정보를 찾는다.
+        String userLoginId = (String) session.getAttribute(SessionConst.sessionId);
         User findUser = userService.findUserByLoginId(userLoginId); //(3)
 
         // (4): userLoginId를 통하여 user 를 찾지 못했을 경우 user는 null이 되며, login 페이지로 이동시킨다.
@@ -58,16 +47,17 @@ public class LoginController {
     }
 
 
-    @PostMapping("/login") // http 서블릿 세션 활용 로그인
-    public String login(@RequestBody LoginRequest loginRequest, HttpServletResponse httpServletRespone) {
+    @PostMapping("/login") // http 서블릿 세션 로그인
+    public String login(@RequestBody LoginRequest loginRequest, HttpServletRequest httpServletRequest) {
 
         // (0) User 정보 확인 -> 오류시 exception 발생
+        // Todo : checkUserInfo 는 예외를 발생시키니까, findUser에서 로직 만들어서 null값 반환하기.
         System.out.println("LoginId: " + loginRequest.getLoginId());
         System.out.println("password: " +  loginRequest.getPassword());
 
         userService.checkUserInfo(loginRequest);
 
-        // 올바른 정보인경우 Member객체가 반환되고, 아니라면 null이 반환된다.
+        // 올바른 정보인경우 User객체가 반환되고, 아니라면 null이 반환된다.
         User loginUser = userService.findUserByLoginId(loginRequest.getLoginId());
 
         // (2) null일 경우 올바른 정보가 입력되지 않았으므로 /로 redirect 시킨다.
@@ -76,32 +66,27 @@ public class LoginController {
         }
 
         // (3): 요청받은 정보가 올바른 회원정보임이 확인되었으니, 세션을 생성한다.
-        // MemberId와 response를 argument로 sessionManager.createSession를 호출한다.
-        sessionService.createSession(loginUser.getLoginId(), httpServletRespone);
+        // http 서블릿 세션을 활용하기 위해서는 httpServleRequest 가 필요함 : 세션이 있으면 세션 반환, 없으면 세션 생성
+        // 이때 request.getSession() 에서 getSession() 의 파라미터안에는 true, false 두가지가 올 수 있음
+        HttpSession session = httpServletRequest.getSession();
+        session.setAttribute(SessionConst.sessionId,loginUser.getLoginId());
 
-        // (4) 정상적으로 세션저장소에 회원정보를 등록하고, response에도 쿠키에 세션정보를 실어 등록하였으므로 /으로 redirect한다.
+        // (4) 생성된 session에 세션정보를 추가한다. 사용자의 userId를 저장한후 /으로 redirect한다.
         return "redirect:/";
-
-//        loginService.login(loginUser,httpServletRequest);
-//        // http 서블릿 세션을 활용하기 위해서는 httpservlerequest 가 필요함 : 세션이 있으면 세션 반환, 없으면 세션 생성
-//        // 이때 request.getSession() 에서 getSession() 의 파라미터안에는 true, false 두가지가 올 수 있음
-//        HttpSession session = httpServletRequest.getSession();
-//
-//        // 세션에 회원 정보(LoginMember) 저장 후 홈으로 반환
-//        session.setAttribute("user", loginUser);
     }
 
-    @PostMapping("/logout") // http 서블릿 세션 활용 로그아웃
-    // 세션 종료를 위해서는 sessionManager 에 만들어두었던 expireCookie 를 사용하자
+    @PostMapping("/logout") // http 서블릿 세션 로그아웃
     public String logout(HttpServletRequest request){
 
-        sessionService.expireCookie(request);
-//        if(session != null){
-//            // invalidate 는 세션을 삭제하는 기능
-//            session.invalidate();
-//        }
-
-        System.out.println("session : " + request);
+        HttpSession session = request.getSession(false);
+        
+        // 세션이 없으면 리다이렉트
+        if(session == null){
+            return "redirect:/";
+        }
+        
+        // invalidate 는 세션을 삭제하는 기능
+        session.invalidate();
         return "redirect:/";
     }
 
