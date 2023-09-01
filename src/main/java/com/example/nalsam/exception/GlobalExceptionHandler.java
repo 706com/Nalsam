@@ -1,6 +1,7 @@
 package com.example.nalsam.exception;
 
 import com.example.nalsam.user.exception.PasswordNotCorrectException;
+import com.example.nalsam.user.exception.UserAlreadyExistException;
 import com.example.nalsam.user.exception.UserNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -21,5 +22,11 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handlePasswordNotCorrectException(PasswordNotCorrectException e){
         return ResponseEntity.status(BAD_REQUEST_ERROR).body(e.getMessage());
     }
+
+    @ExceptionHandler(UserAlreadyExistException.class)
+    public ResponseEntity<?> handleUserAlreadyExisstException(UserAlreadyExistException e){
+        return ResponseEntity.status(BAD_REQUEST_ERROR).body(e.getMessage());
+    }
+
 }
 
