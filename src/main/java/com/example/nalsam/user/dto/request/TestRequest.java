@@ -11,13 +11,10 @@ import javax.persistence.Id;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class TestRequest {
 
-    private String title;
-
-    private String content;
+    private String loginId;
 
     @Builder
-    public TestRequest(String title, String content) {
-        this.title = title;
-        this.content = content;
+    public TestRequest(String loginId) {
+        this.loginId = loginId;
     }
 }
