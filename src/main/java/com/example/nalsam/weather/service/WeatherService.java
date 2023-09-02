@@ -1,8 +1,10 @@
 package com.example.nalsam.weather.service;
 
 import com.example.nalsam.weather.api.CurrentWeatherApiCaller;
+import com.example.nalsam.weather.api.WeatherForecastApiCaller;
 import com.example.nalsam.weather.domain.LocationInfo;
 import com.example.nalsam.weather.dto.WeatherDto;
+import com.example.nalsam.weather.dto.WeatherForecastDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -17,8 +19,9 @@ import java.util.List;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class CurrentWeatherService {
+public class WeatherService {
     private final CurrentWeatherApiCaller currentWeatherApiCaller;
+    private final WeatherForecastApiCaller weatherForecastApiCaller;
     private final LocationInfoService locationInfoService;
 
     public WeatherDto getCurrentWeatherInfo(String nx,String ny,String sido,String gu) {
@@ -39,6 +42,39 @@ public class CurrentWeatherService {
 
 
         var WeatherInfo = currentWeatherApiCaller.getCurrentWeather(date,time,nx,ny,sido,gu);
+        return WeatherInfo;
+    }
+
+    public WeatherForecastDto getWeatherForecastInfo(String nx, String ny, String sido, String gu) {
+
+        // 현재 날짜와 시간 가져오기
+        LocalDateTime currentDateTime = LocalDateTime.now();
+
+
+        // 출력 형식 지정
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        DateTimeFormatter hourFormatter = DateTimeFormatter.ofPattern("HHmm");
+
+
+        // 02시를 기준으로 분기
+        LocalDateTime resultDateTime;
+        if (currentDateTime.getHour() >= 2) {
+            resultDateTime = currentDateTime.withHour(2).withMinute(0);
+        } else {
+            resultDateTime = currentDateTime.minusDays(1).withHour(23).withMinute(0);
+        }
+        System.out.println("resultDateTime  : "+ resultDateTime.getHour());
+        System.out.println("---------------------");
+        // date와 hour 변수로 분리
+        String date = resultDateTime.format(dateFormatter);
+        String hour = resultDateTime.format(hourFormatter);
+
+        // 출력
+        System.out.println("Date: " + date);
+        System.out.println("Hour: " + hour);
+
+
+        var WeatherInfo = weatherForecastApiCaller.getWeatherForecast(date,hour,nx,ny,sido,gu);
         return WeatherInfo;
     }
 
