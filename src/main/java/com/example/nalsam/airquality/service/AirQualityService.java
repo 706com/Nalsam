@@ -5,6 +5,7 @@ import com.example.nalsam.airquality.dto.AirQualityInfo;
 import com.example.nalsam.airquality.repository.StationLocationRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,11 +17,11 @@ public class AirQualityService {
     private final com.example.nalsam.airquality.api.AirQualityApiCaller AirQualityApiCaller;
     private final StationLocationService stationLocationService;
 
+    @Cacheable(value = "airQualityCache", key = "#latitude + '_' + #longitude")
     public AirQualityInfo getAirQualityInfo(Double latitude, Double longitude) {
 
         StationLocation nearestStation = findNearestStation(latitude, longitude);
         String sidoCode = nearestStation.getAddress().substring(0,2);
-        System.out.println(sidoCode);
         var airQualityInfo = AirQualityApiCaller.getAir(sidoCode);
         if (nearestStation != null) {
 
@@ -28,6 +29,7 @@ public class AirQualityService {
         }
         return airQualityInfo;
     }
+    @Cacheable(value = "nearestStationCache", key = "#latitude + '_' + #longitude")
     public StationLocation findNearestStation(Double latitude, Double longitude){
         List<StationLocation> stationLocations = stationLocationService.getAllStationLocations();
 
@@ -46,7 +48,8 @@ public class AirQualityService {
         return nearestStation;
     }
 
-    private double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
+    @Cacheable(value = "calculateDistanceCache", key = "#lat1 + '_' + #lon1 +'_' + #lat2 +'_' + #lon2")
+    public double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
         final int R = 6371;
 
         double latDistance = Math.toRadians(lat2 - lat1);

@@ -7,6 +7,7 @@ import com.example.nalsam.weather.dto.WeatherDto;
 import com.example.nalsam.weather.dto.WeatherForecastDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
@@ -24,6 +25,7 @@ public class WeatherService {
     private final WeatherForecastApiCaller weatherForecastApiCaller;
     private final LocationInfoService locationInfoService;
 
+    @Cacheable(value = "currentWeatherCache", key = "#nx + '_' + #ny+ '_' + #sido+ '_' + #gu")
     public WeatherDto getCurrentWeatherInfo(String nx,String ny,String sido,String gu) {
 
         LocalDateTime dateTime = LocalDateTime.now();
@@ -44,7 +46,7 @@ public class WeatherService {
         var WeatherInfo = currentWeatherApiCaller.getCurrentWeather(date,time,nx,ny,sido,gu);
         return WeatherInfo;
     }
-
+    @Cacheable(value = "WeatherForecastCache", key = "#nx + '_' + #ny+ '_' + #sido+ '_' + #gu")
     public WeatherForecastDto getWeatherForecastInfo(String nx, String ny, String sido, String gu) {
 
         // 현재 날짜와 시간 가져오기
@@ -77,7 +79,7 @@ public class WeatherService {
         var WeatherInfo = weatherForecastApiCaller.getWeatherForecast(date,hour,nx,ny,sido,gu);
         return WeatherInfo;
     }
-
+    @Cacheable(value = "nearestStationCache", key = "#latitude + '_' + #longitude")
     public LocationInfo findNearestLocation(Double latitude,Double longitude){
         List<LocationInfo> locationInfos = locationInfoService.getAllLocationInfo();
 
@@ -94,7 +96,8 @@ public class WeatherService {
 
         return nearestLocation;
     }
-    private double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
+    @Cacheable(value = "calculateDistanceCache", key = "#lat1 + '_' + #lon1 +'_' + #lat2 +'_' + #lon2")
+    public double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
         final int R = 6371;
 
         double latDistance = Math.toRadians(lat2 - lat1);
