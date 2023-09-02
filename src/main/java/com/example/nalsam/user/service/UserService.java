@@ -1,17 +1,13 @@
 package com.example.nalsam.user.service;
 
-import com.example.nalsam.user.dto.request.TestRequest;
-import com.example.nalsam.user.dto.request.UserDeletionRequest;
-import com.example.nalsam.user.dto.request.UserPasswordRequest;
-import com.example.nalsam.user.dto.request.UserRequest;
+import com.example.nalsam.user.dto.request.*;
 import com.example.nalsam.user.dto.response.UserResponse;
 import com.example.nalsam.user.exception.PasswordNotCorrectException;
+import com.example.nalsam.user.exception.UserAlreadyExistException;
 import com.example.nalsam.user.exception.UserNotFoundException;
-import com.example.nalsam.user.repository.TestUserRepository;
 import com.example.nalsam.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import com.example.nalsam.user.domain.Test;
 import com.example.nalsam.user.domain.User;
 
 import javax.transaction.Transactional;
@@ -25,10 +21,20 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    private final TestUserRepository testUserRepository;
+
+    //회원 저장 기능 test
+    public User getUserTest(TestRequest request){
+        User user = userRepository.findByLoginId(request.getLoginId()).get();
+
+        return user;
+    }
 
     // 회원 저장 기능
     public void saveUserProfile(UserRequest userRequest){
+
+        if(!userRepository.existsByLoginId(userRequest.getLoginId())){
+            throw new UserAlreadyExistException();
+        }
 
         LocalDateTime localDateTime = LocalDateTime.now();
 
@@ -48,19 +54,6 @@ public class UserService {
                 .build();
 
         userRepository.save(user);
-    }
-
-    //회원 저장 기능 test
-    public Test saveTest(TestRequest testRequest){
-
-        Test test = Test.builder()
-                .title(testRequest.getTitle())
-                .content(testRequest.getContent())
-                .build();
-
-        testUserRepository.save(test);
-
-        return test;
     }
 
     // 회원 조회 기능
@@ -131,4 +124,22 @@ public class UserService {
         userRepository.delete(user);
     }
 
+    // 로그인 ID 로 회원 찾기.
+    public User findUserByLoginId(String userLoginId) {
+
+        return userRepository.findByLoginId(userLoginId).orElse(null);
+
+    }
+
+    // 아이디 비밀번호 체크. 오류시 exception 발생
+    public void checkUserInfo(LoginRequest request){
+        if(!userRepository.existsByLoginId(request.getLoginId())){
+            throw new UserNotFoundException();
+        }
+
+        else if(!request.getPassword().equals(userRepository.findByLoginId(request.getLoginId()).get().getPassword())){
+            throw new PasswordNotCorrectException();
+        }
+
+    }
 }

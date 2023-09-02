@@ -9,7 +9,6 @@ import com.example.nalsam.user.dto.response.UserResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.example.nalsam.user.domain.Test;
 import com.example.nalsam.user.service.UserService;
 
 import java.util.List;
@@ -23,9 +22,9 @@ public class UserController {
 
     // < 회원 저장 TEST >
     @PostMapping("/test")
-    public ResponseEntity<Test> createUserTest(@RequestBody TestRequest testRequest){
+    public ResponseEntity<User> createUserTest(@RequestBody TestRequest testRequest){
 
-        return ResponseEntity.ok().body(userService.saveTest(testRequest));
+        return ResponseEntity.ok().body(userService.getUserTest(testRequest));
     }
 
     // < 회원 저장 API >
