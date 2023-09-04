@@ -6,9 +6,9 @@ import com.example.nalsam.user.dto.request.LoginRequest;
 import com.example.nalsam.user.exception.UserNotFoundException;
 import com.example.nalsam.user.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,36 +16,34 @@ import javax.servlet.http.HttpSession;
 
 @Controller
 @RequiredArgsConstructor
-//@RequestMapping("/login")
-//로그인 시 세션을 생성하여 home으로 보내주거나 로그아웃 시 세션을 삭제
 public class LoginController {
-    
+
     private final UserService userService;
-    
-//    // URL : / 요청 (home)을 처리 url.
-//    //(1): 세션정보를 가져오기 위하여 request 로 요청
-//    @GetMapping("/")
-//    public ResponseEntity<User> home(HttpServletRequest request, Model model) {
-//
-//        // (1):  argument가 false : 세션이 있으면 세션을, 없다면 null을 return 한다.
-//        HttpSession session = request.getSession(false);
-//
-////        // (2): (1)에서 유효한 Session을 찾지 못한 경우 userId는 null이 되며, login 페이지로 이동시킨다.
-////        if(session == null) {
-////            return "login";
-////        }
-//
-//        // (3): (1)에서 유효한 Session을 통해 정상적인 userId를 반환받았을 경우, user 정보를 찾는다.
-//        String userLoginId = (String) session.getAttribute(SessionConst.sessionId);
-//        User findUser = userService.findUserByLoginId(userLoginId); //(3)
-//
-//        // (4): userLoginId를 통하여 user 를 찾지 못했을 경우 user는 null이 되며, login 페이지로 이동시킨다.
-//        if(findUser == null) { //(4)
-//            throw new UserNotFoundException();
-//        }
-//        // (5): model에 member를 추가하여 home 페이지로 이동시킨다.
-//        return ResponseEntity.ok().body(findUser); //(5)
-//    }
+
+    // URL : main url.
+    //(1): 세션정보를 가져오기 위하여 request 로 요청
+    @GetMapping("/main")
+    public ResponseEntity<User> home(HttpServletRequest request) {
+
+        // (1):  argument가 false : 세션이 있으면 세션을, 없다면 null을 반환 한다.
+        HttpSession session = request.getSession(false);
+
+        // (2): (1)에서 유효한 Session을 찾지 못한 경우 userId는 null이 되며, null값을 return시킨다.
+        if(session == null) {
+            return ResponseEntity.status(HttpStatus.OK).body(null);
+        }
+
+        // (3): (1)에서 유효한 Session을 통해 정상적인 userId를 반환받았을 경우, user 정보를 찾는다.
+        String userLoginId = (String) session.getAttribute(SessionConst.sessionId);
+        User findUser = userService.findUserByLoginId(userLoginId); //(3)
+
+        // (4): userLoginId를 통하여 user 를 찾지 못했을 경우 user는 null이 되며, 예외를 보낸다.
+        if(findUser == null) { //(4)
+            throw new UserNotFoundException();
+        }
+        // (5): responseEntity 찾은 유저를 return시킨다.
+        return ResponseEntity.ok().body(findUser); //(5)
+    }
 
 
     @PostMapping("/login") // http 서블릿 세션 로그인
@@ -80,12 +78,12 @@ public class LoginController {
     public ResponseEntity<Void> logout(HttpServletRequest request){
 
         HttpSession session = request.getSession(false);
-        
+
 //        // 세션이 없으면 리다이렉트
 //        if(session == null){
 //            return "redirect:/";
 //        }
-        
+
         // invalidate 는 세션을 삭제하는 기능
         session.invalidate();
         return ResponseEntity.noContent().build();
