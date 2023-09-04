@@ -17,19 +17,17 @@ public class AirQualityService {
     private final com.example.nalsam.airquality.api.AirQualityApiCaller AirQualityApiCaller;
     private final StationLocationService stationLocationService;
 
-    @Cacheable(value = "airQualityCache", key = "#latitude + '_' + #longitude")
-    public AirQualityInfo getAirQualityInfo(Double latitude, Double longitude) {
+    @Cacheable(value = "airQualityCache", key = "#latitude + '_' + #longitude+'_'+#dateHourString")
+    public AirQualityInfo getAirQualityInfo(Double latitude, Double longitude,String dateHourString ) {
 
         StationLocation nearestStation = findNearestStation(latitude, longitude);
         String sidoCode = nearestStation.getAddress().substring(0,2);
         var airQualityInfo = AirQualityApiCaller.getAir(sidoCode);
         if (nearestStation != null) {
-
             return airQualityInfo.searchByGu(nearestStation.getStationName());
         }
         return airQualityInfo;
     }
-    @Cacheable(value = "nearestStationCache", key = "#latitude + '_' + #longitude")
     public StationLocation findNearestStation(Double latitude, Double longitude){
         List<StationLocation> stationLocations = stationLocationService.getAllStationLocations();
 
@@ -48,7 +46,6 @@ public class AirQualityService {
         return nearestStation;
     }
 
-    @Cacheable(value = "calculateDistanceCache", key = "#lat1 + '_' + #lon1 +'_' + #lat2 +'_' + #lon2")
     public double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
         final int R = 6371;
 

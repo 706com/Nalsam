@@ -3,6 +3,7 @@ package com.example.nalsam.airquality.controller;
 import com.example.nalsam.airquality.domain.StationLocation;
 import com.example.nalsam.airquality.dto.AirQualityInfo;
 import com.example.nalsam.airquality.service.AirQualityService;
+import com.example.nalsam.airquality.util.DateUtil;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,13 +21,12 @@ public class AirQualityController {
         if (latitude != null && longitude != null) {
             StationLocation nearestStation = airQualityService.findNearestStation(latitude, longitude);
             if (nearestStation != null) {
-
-                return airQualityService.getAirQualityInfo(nearestStation.getLatitude(), nearestStation.getLongitude());
+                return airQualityService.getAirQualityInfo(nearestStation.getLatitude(), nearestStation.getLongitude(), DateUtil.getDateHourString());
             } else {
                 return null;
             }
         } else {
-            return airQualityService.getAirQualityInfo(null, null);
+            return airQualityService.getAirQualityInfo(null, null,null);
         }
     }
 }
