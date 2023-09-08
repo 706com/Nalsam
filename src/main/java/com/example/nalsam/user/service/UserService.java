@@ -32,13 +32,14 @@ public class UserService {
     // 회원 저장 기능
     public void saveUserProfile(UserRequest userRequest){
 
-        if(!userRepository.existsByLoginId(userRequest.getLoginId())){
+        if(userRepository.existsByLoginId(userRequest.getLoginId())){
             throw new UserAlreadyExistException();
         }
 
         LocalDateTime localDateTime = LocalDateTime.now();
 
-        Integer testOxygen = 100;   //산소포화도 테스트 데이터
+        Integer testOxygen = 90;   //산소포화도 테스트 데이터
+        Integer testHeartRate = 80; //심박수 테스트 데이터
 
         User user = User.builder()
                 .loginId(userRequest.getLoginId())
@@ -46,7 +47,7 @@ public class UserService {
                 .userName(userRequest.getUserName())
                 .birthDate(userRequest.getBirthDate())
                 .isMale(userRequest.getIsMale())
-                .location(userRequest.getLocation())
+                .heartRate(testHeartRate)
                 .oxygenSaturation(testOxygen)
                 .symptom(userRequest.getSymptom())
                 .createDateTime(localDateTime)
@@ -67,7 +68,6 @@ public class UserService {
                 .userName(user.getUserName())
                 .birthDate(user.getBirthDate())
                 .isMale(user.getIsMale())
-                .location(user.getLocation())
                 .symptom(user.getSymptom())
                 .build();
     }
@@ -83,7 +83,6 @@ public class UserService {
                         .userName(user.getUserName())
                         .birthDate(user.getBirthDate())
                         .isMale(user.getIsMale())
-                        .location(user.getLocation())
                         .symptom(user.getSymptom())
                         .build())
                 .collect(Collectors.toList());
