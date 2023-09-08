@@ -1,4 +1,4 @@
-package com.example.nalsam.user.controller;
+package com.example.nalsam.user.jwt;
 
 import com.example.nalsam.user.domain.User;
 import com.example.nalsam.user.dto.SessionConst;
@@ -20,34 +20,13 @@ public class LoginController {
 
     private final UserService userService;
 
-    // URL : main url.
-    //(1): 세션정보를 가져오기 위하여 request 로 요청
-    @GetMapping("/main")
-    public ResponseEntity<User> home(HttpServletRequest request) {
-
-        // (1):  argument가 false : 세션이 있으면 세션을, 없다면 null을 반환 한다.
-        HttpSession session = request.getSession(false);
-
-        // (2): (1)에서 유효한 Session을 찾지 못한 경우 userId는 null이 되며, null값을 return시킨다.
-        if(session == null) {
-            return ResponseEntity.status(HttpStatus.OK).body(null);
-        }
-
-        // (3): (1)에서 유효한 Session을 통해 정상적인 userId를 반환받았을 경우, user 정보를 찾는다.
-        String userLoginId = (String) session.getAttribute(SessionConst.sessionId);
-        User findUser = userService.findUserByLoginId(userLoginId); //(3)
-
-        // (4): userLoginId를 통하여 user 를 찾지 못했을 경우 user는 null이 되며, 예외를 보낸다.
-        if(findUser == null) { //(4)
-            throw new UserNotFoundException();
-        }
-        // (5): responseEntity 찾은 유저를 return시킨다.
-        return ResponseEntity.ok().body(findUser); //(5)
-    }
-
 
     @PostMapping("/login") // http 서블릿 세션 로그인
-    public ResponseEntity<User> login(@RequestBody LoginRequest loginRequest, HttpServletRequest httpServletRequest) {
+    public ResponseEntity<JwtToken> login(@RequestBody LoginRequest loginRequest) {
+
+        JwtToken token = userService.checkUserInfo(loginRequest);
+        return ResponseEntity.ok(token);
+
 
         // (0) User 정보 확인 -> 오류시 exception 발생
         // Todo : checkUserInfo 는 예외를 발생시키니까, findUser에서 로직 만들어서 null값 반환하기.
