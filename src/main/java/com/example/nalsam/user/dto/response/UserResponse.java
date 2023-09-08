@@ -22,18 +22,15 @@ public class UserResponse {
 
     private Integer isMale;
 
-    private String location;
-
     private String symptom;
 
 
     @Builder
-    public UserResponse(String loginId, String userName,String birthDate, Integer isMale, String location, String symptom) {
+    public UserResponse(String loginId, String userName,String birthDate, Integer isMale, String symptom) {
         this.loginId = loginId;
         this.userName = userName;
         this.birthDate = birthDate;
         this.isMale = isMale;
-        this.location = location;
         this.symptom = symptom;
     }
 }
