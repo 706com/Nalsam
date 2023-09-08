@@ -27,19 +27,16 @@ public class UserRequest {
     @Column(name = "is_male")
     private Integer isMale;
 
-    private String location;
-
     private String symptom;
 
 
     @Builder
-    public UserRequest(String loginId, String password, String userName,String birthDate, Integer isMale, String location, String symptom) {
+    public UserRequest(String loginId, String password, String userName,String birthDate, Integer isMale, String symptom) {
         this.loginId = loginId;
         this.password = password;
         this.userName = userName;
         this.birthDate = birthDate;
         this.isMale = isMale;
-        this.location = location;
         this.symptom = symptom;
     }
 }
