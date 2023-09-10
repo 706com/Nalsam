@@ -2,6 +2,7 @@ package com.example.nalsam.user.jwt;
 
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GeneratorType;
 
@@ -11,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 @Entity(name = "token")
 public class Token {
 
@@ -18,17 +20,11 @@ public class Token {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String loginId;
 
-    private String role;
-
-    private String type;
-
-    private String token;
+    private String refreshToken;
 
     @Builder
-    public Token(String loginId,String role, String type, String token) {
+    public Token(String loginId,String refreshToken) {
         this.loginId = loginId;
-        this.role = role;
-        this.type = type;
-        this.token = token;
+        this.refreshToken = refreshToken;
     }
 }

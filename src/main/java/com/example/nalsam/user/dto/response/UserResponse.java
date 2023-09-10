@@ -33,4 +33,8 @@ public class UserResponse {
         this.isMale = isMale;
         this.symptom = symptom;
     }
+
+    public static UserResponse of(){
+
+    }
 }

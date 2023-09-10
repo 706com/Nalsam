@@ -1,5 +1,7 @@
 package com.example.nalsam.config;
 
+import com.example.nalsam.user.jwt.JwtAuthenticationFilter;
+import com.example.nalsam.user.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,6 +16,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /*
 아무 설정도 되지 않은 기본 상태에서는 서버의 어디로 접속하더라도 위의 임시 로그인창에서 로그인을 진행해야 한다.
@@ -23,14 +26,11 @@ import org.springframework.security.web.SecurityFilterChain;
  */
 
 @Configuration
+@RequiredArgsConstructor
 @EnableWebSecurity
 public class WebSecurityConfig {
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-
-    }
+    private JwtTokenProvider jwtTokenProvider;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -46,13 +46,16 @@ public class WebSecurityConfig {
 //                                 회원가입과 로그인만 모두 승인
                                 .antMatchers("/login","/user/save").permitAll()
                                 // /air, weather로 시작하는 요청은 MASTER 권한이 있는 유저에게만 허용
-                                .antMatchers("/air/**","/weather/**").hasRole("MASTER")
+//                                .antMatchers("/air/**","/weather/**").permitAll()
                                 // /user 로 시작하는 요청은 USER 권한이 있는 유저에게만 허용
                                 .antMatchers("/user/show/all").hasRole("USER")
                                 // 그 외의 모든 요청은 인증 필요
                                 .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults()) // HTTP 기본 인증 사용
+                // JwtAuthenticationFilter를 UsernamePasswordAuthenticationFilter 전에 넣기
+                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
+                        UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 }

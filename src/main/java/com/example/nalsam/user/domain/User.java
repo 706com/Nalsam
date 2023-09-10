@@ -6,15 +6,18 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Collection;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity(name = "user_info")
-public class User {
+public class User implements UserDetails {
 
     @Id
     @Column(name = "user_id", nullable = false)
@@ -30,7 +33,7 @@ public class User {
 
     @NotNull
     @Column(name = "user_name")
-    private String userName;
+    private String name;
 
     @NotNull
     @Column(name = "birth_date")
@@ -56,11 +59,11 @@ public class User {
 
 
     @Builder
-    public User(Long userId, String loginId, String password, String userName, String birthDate, Integer isMale, Integer heartRate, Integer oxygenSaturation, String symptom, LocalDateTime createDateTime, LocalDateTime updateDateTime) {
+    public User(Long userId, String loginId, String password, String name, String birthDate, Integer isMale, Integer heartRate, Integer oxygenSaturation, String symptom, LocalDateTime createDateTime, LocalDateTime updateDateTime) {
         this.userId = userId;
         this.loginId = loginId;
         this.password = password;
-        this.userName = userName;
+        this.name = name;
         this.birthDate = birthDate;
         this.isMale = isMale;
         this.heartRate = heartRate;
@@ -73,5 +76,35 @@ public class User {
     public void updatePassword(String password, LocalDateTime updateDateTime) {
         this.password = password;
         this.updateDateTime = updateDateTime;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
+
+    @Override
+    public String getUsername() {
+        return loginId;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }
