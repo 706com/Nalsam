@@ -34,7 +34,7 @@ public class UserResponse {
         this.symptom = symptom;
     }
 
-    public static UserResponse of(){
-
-    }
+//    public static UserResponse of(){
+//
+//    }
 }

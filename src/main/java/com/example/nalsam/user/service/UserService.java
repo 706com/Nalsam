@@ -7,6 +7,7 @@ import com.example.nalsam.user.exception.UserAlreadyExistException;
 import com.example.nalsam.user.exception.UserNotFoundException;
 import com.example.nalsam.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.example.nalsam.user.domain.User;
 
@@ -20,6 +21,8 @@ import java.util.stream.Collectors;
 public class UserService {
 
     private final UserRepository userRepository;
+
+    private final PasswordEncoder passwordEncoder;
 
 
     //회원 저장 기능 test
@@ -131,12 +134,15 @@ public class UserService {
     }
 
     // 아이디 비밀번호 체크. 오류시 exception 발생
+    @Transactional
     public void checkUserInfo(LoginRequest request){
         if(!userRepository.existsByLoginId(request.getLoginId())){
             throw new UserNotFoundException();
         }
 
-        else if(!request.getPassword().equals(userRepository.findByLoginId(request.getLoginId()).get().getPassword())){
+        User user = findUserByLoginId(request.getLoginId());
+
+        if(!passwordEncoder.matches(request.getPassword(),user.getPassword())){
             throw new PasswordNotCorrectException();
         }
 

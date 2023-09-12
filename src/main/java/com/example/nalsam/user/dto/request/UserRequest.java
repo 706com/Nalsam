@@ -14,17 +14,14 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserRequest {
 
-    @Column(name = "login_id")
     private String loginId;
 
     private String password;
 
-    @Column(name = "user_name")
     private String userName;
 
     private String birthDate;
 
-    @Column(name = "is_male")
     private Integer isMale;
 
     private String symptom;

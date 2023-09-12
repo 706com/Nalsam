@@ -26,34 +26,42 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
  */
 
 @Configuration
-@RequiredArgsConstructor
 @EnableWebSecurity
 public class WebSecurityConfig {
 
     private JwtTokenProvider jwtTokenProvider;
 
+    public WebSecurityConfig(JwtTokenProvider jwtTokenProvider) {
+        this.jwtTokenProvider = jwtTokenProvider;
+    }
+
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
+    }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
-                // 쿠키 기반이 아닌 jwt 기반이므로 사용x
+                // 쿠키 기반이 아닌 jwt 기반이므로 사용x : disable 이유는 jwt를 쿠키에 저장하지 않기 때문에.
                 .csrf().disable()
                 // spring security 세션 정책 : 세션을 생성 하거나 사용 x
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
+                .httpBasic(Customizer.withDefaults()) // HTTP 기본 인증 사용
                 // 조건별 요청 허용,제한 설정
                 .authorizeRequests(authorizeRequests ->
                         authorizeRequests
 //                                 회원가입과 로그인만 모두 승인
-                                .antMatchers("/login","/user/save").permitAll()
+                                .antMatchers("/login","/user/save","/signup").permitAll()
                                 // /air, weather로 시작하는 요청은 MASTER 권한이 있는 유저에게만 허용
 //                                .antMatchers("/air/**","/weather/**").permitAll()
                                 // /user 로 시작하는 요청은 USER 권한이 있는 유저에게만 허용
-                                .antMatchers("/user/show/all").hasRole("USER")
                                 // 그 외의 모든 요청은 인증 필요
                                 .anyRequest().authenticated()
                 )
-                .httpBasic(Customizer.withDefaults()) // HTTP 기본 인증 사용
                 // JwtAuthenticationFilter를 UsernamePasswordAuthenticationFilter 전에 넣기
+                // -> UsernamePasswordAuthenticationFilter 로 가기 전에 내가 직접 만든 JwtAuthenticationFilter를 실행하겠다.
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
                         UsernamePasswordAuthenticationFilter.class)
                 .build();

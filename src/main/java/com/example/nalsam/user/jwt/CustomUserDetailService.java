@@ -1,5 +1,6 @@
 package com.example.nalsam.user.jwt;
 
+import com.example.nalsam.user.domain.User;
 import com.example.nalsam.user.exception.UserNotFoundException;
 import com.example.nalsam.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,8 @@ public class CustomUserDetailService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByLoginId(username).orElseThrow(UserNotFoundException::new);
+        User user =  userRepository.findByLoginId(username).orElseThrow(UserNotFoundException::new);
+
+        return user;
     }
 }

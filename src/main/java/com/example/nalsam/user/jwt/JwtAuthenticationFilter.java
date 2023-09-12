@@ -2,6 +2,7 @@ package com.example.nalsam.user.jwt;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.util.StringUtils;
 import org.springframework.web.filter.GenericFilterBean;
 import org.springframework.security.core.Authentication;
 
@@ -12,6 +13,12 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
+/*
+Jwt 인증을 위해 생성되는 토큰. 요청과 함께 바로 실행됨.
+요청이 들어오면 헤더에서 토큰 추출.
+그리고 유효성 검사.
+ */
+
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends GenericFilterBean {
 
@@ -20,9 +27,11 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         // Header 에서 jwt 받아오기
-        String token = jwtTokenProvider.resolveToken((HttpServletRequest) request);
+        String token = resolveToken((HttpServletRequest) request);
 
-        // 유효한 토큰인지 검증
+        // 유효한 토큰인지 검증 (accessToken을 가져와 복호화하고 검증)
+        // 검증이 모두 끝나면 토큰을 인증받은 유저인 UsernamePasswordAuthenticationToken을 리턴
+        // 과정이 끝나면, 이 유저는 토큰이 유효한 유저임이 증명되고 SecurityContext 에 저장
         if(token != null && jwtTokenProvider.validateToken(token)){
             // 유효한 토큰이면 토큰으로부터 유저정보 받아오기.
             Authentication authentication = jwtTokenProvider.getAuthentication(token);
@@ -30,5 +39,18 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
             // SecurityContext 에 Authentication 객체 저장.
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
+        chain.doFilter(request,response);
+    }
+
+    //Request의 Header에서 token 값 가져오기. "X-AUTH-TOKEN" : "TOKEN값'
+    public String resolveToken(HttpServletRequest request){
+
+        //Authorization 이 Bearer 임을 확인
+        String bearerToken = request.getHeader("Authorization");
+        if(StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer")){
+            return bearerToken.substring(7);
+//            return request.getHeader("X-AUTH-TOKEN");
+        }
+        return null;
     }
 }

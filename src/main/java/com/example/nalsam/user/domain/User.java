@@ -17,7 +17,7 @@ import java.util.Collection;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity(name = "user_info")
-public class User implements UserDetails {
+public class User implements UserDetails{
 
     @Id
     @Column(name = "user_id", nullable = false)
@@ -86,6 +86,11 @@ public class User implements UserDetails {
     @Override
     public String getUsername() {
         return loginId;
+    }
+
+    @Override
+    public String getPassword(){
+        return password;
     }
 
     @Override
