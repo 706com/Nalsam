@@ -14,16 +14,10 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class LoginController {
 
-    private final UserService userService;
-
     private final LoginService loginService;
 
-    private final JwtTokenProvider jwtTokenProvider;
-
-    public LoginController(UserService userService, LoginService loginService, JwtTokenProvider jwtTokenProvider) {
-        this.userService = userService;
+    public LoginController(LoginService loginService) {
         this.loginService = loginService;
-        this.jwtTokenProvider = jwtTokenProvider;
     }
 
 
@@ -36,27 +30,27 @@ public class LoginController {
 
     }
 
-    @PostMapping("/logout") // http 서블릿 세션 로그아웃
-    public ResponseEntity<Void> logout(HttpServletRequest request){
-
-        HttpSession session = request.getSession(false);
-
-//        // 세션이 없으면 리다이렉트
-//        if(session == null){
-//            return "redirect:/";
-//        }
-
-        // invalidate 는 세션을 삭제하는 기능
-        session.invalidate();
-        return ResponseEntity.noContent().build();
-    }
-
     // < 회원 저장 API >
     @PostMapping("/signup")
-    public ResponseEntity<Void> createUsers(@RequestBody UserRequest userRequest){
+    public ResponseEntity<Void> signup(@RequestBody UserRequest userRequest){
 
-        loginService.signup(userRequest);
+        loginService.createUser(userRequest);
 
         return ResponseEntity.noContent().build();
     }
+
+//    @PostMapping("/logout") // http 서블릿 세션 로그아웃
+//    public ResponseEntity<Void> logout(HttpServletRequest request){
+//
+//        HttpSession session = request.getSession(false);
+//
+////        // 세션이 없으면 리다이렉트
+////        if(session == null){
+////            return "redirect:/";
+////        }
+//
+//        // invalidate 는 세션을 삭제하는 기능
+//        session.invalidate();
+//        return ResponseEntity.noContent().build();
+//    }
 }

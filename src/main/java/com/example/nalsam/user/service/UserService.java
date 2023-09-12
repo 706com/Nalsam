@@ -7,6 +7,7 @@ import com.example.nalsam.user.exception.UserAlreadyExistException;
 import com.example.nalsam.user.exception.UserNotFoundException;
 import com.example.nalsam.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.example.nalsam.user.domain.User;
@@ -24,6 +25,8 @@ public class UserService {
 
     private final PasswordEncoder passwordEncoder;
 
+    private final BCryptPasswordEncoder encoder;
+
 
     //회원 저장 기능 test
     public User getUserTest(TestRequest request){
@@ -39,6 +42,8 @@ public class UserService {
             throw new UserAlreadyExistException();
         }
 
+        String encPwd = encoder.encode(userRequest.getPassword());
+
         LocalDateTime localDateTime = LocalDateTime.now();
 
         Integer testOxygen = 90;   //산소포화도 테스트 데이터
@@ -46,7 +51,7 @@ public class UserService {
 
         User user = User.builder()
                 .loginId(userRequest.getLoginId())
-                .password(userRequest.getPassword())
+                .password(encPwd)
                 .name(userRequest.getUserName())
                 .birthDate(userRequest.getBirthDate())
                 .isMale(userRequest.getIsMale())

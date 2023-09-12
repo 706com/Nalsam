@@ -41,8 +41,7 @@ public class LoginService {
         1. login 요청이 들어오면, 유저정보의 인증과정 진행
         2. loginId 와 password 기반의 Authenticaion Token 객체를 생성 후 검증과정 진행
         3. 검증된 인증 정보로 JWT 토큰 생성
-
-         */
+    */
     public JwtToken login(LoginRequest request){
 
         // 계정 로그인 정보 확인 (아이디 패스워드)
@@ -58,15 +57,14 @@ public class LoginService {
 
     }
 
-    // 회원 저장 기능
-    public void signup(UserRequest userRequest){
+    // 회원가입
+    public void createUser(UserRequest userRequest){
 
         if(userRepository.existsByLoginId(userRequest.getLoginId())){
             throw new UserAlreadyExistException();
         }
 
         LocalDateTime localDateTime = LocalDateTime.now();
-
         Integer testOxygen = 90;   //산소포화도 테스트 데이터
         Integer testHeartRate = 80; //심박수 테스트 데이터
 
