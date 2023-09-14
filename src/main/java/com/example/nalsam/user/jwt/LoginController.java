@@ -2,9 +2,12 @@ package com.example.nalsam.user.jwt;
 
 import com.example.nalsam.user.dto.request.LoginRequest;
 import com.example.nalsam.user.dto.request.UserRequest;
+import com.example.nalsam.user.dto.response.UserResponse;
 import com.example.nalsam.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,8 +19,11 @@ public class LoginController {
 
     private final LoginService loginService;
 
-    public LoginController(LoginService loginService) {
+    private final CustomUserDetailService customUserDetailService;
+
+    public LoginController(LoginService loginService, CustomUserDetailService customUserDetailService) {
         this.loginService = loginService;
+        this.customUserDetailService = customUserDetailService;
     }
 
 
@@ -39,18 +45,15 @@ public class LoginController {
         return ResponseEntity.noContent().build();
     }
 
-//    @PostMapping("/logout") // http 서블릿 세션 로그아웃
-//    public ResponseEntity<Void> logout(HttpServletRequest request){
+    @PostMapping("/mainn") // http 서블릿 세션 로그아웃
+    public ResponseEntity<String> main(){
+
+//        UserDetails userDetails = customUserDetailService.loadUserByUsername(loginId);
 //
-//        HttpSession session = request.getSession(false);
-//
-////        // 세션이 없으면 리다이렉트
-////        if(session == null){
-////            return "redirect:/";
-////        }
-//
-//        // invalidate 는 세션을 삭제하는 기능
-//        session.invalidate();
-//        return ResponseEntity.noContent().build();
-//    }
+//        String test =  userDetails.getUsername();
+//        System.out.println(userDetails.getUsername());
+        String user = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        return ResponseEntity.ok().body(user);
+    }
 }

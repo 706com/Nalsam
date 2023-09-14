@@ -100,8 +100,8 @@ public class JwtTokenProvider {
                         .map(SimpleGrantedAuthority::new)
                         .collect(Collectors.toList());
 
-        UserDetails userDetails = new User(claims.getSubject(),"",authorities);
-        return new UsernamePasswordAuthenticationToken(userDetails, "", authorities);
+        UserDetails principal = new User(claims.getSubject(),"",authorities);
+        return new UsernamePasswordAuthenticationToken(principal, "", authorities);
     }
 
     // 토큰 유효성(access) 및 만료일자 확인
