@@ -61,7 +61,7 @@ public class JwtTokenProvider {
     }
 
     //jwt 생성
-    public JwtToken createToken(Authentication authentication,String loginId){
+    public JwtToken createToken(Authentication authentication){
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
@@ -135,10 +135,15 @@ public class JwtTokenProvider {
         }
     }
 
+    public String getAccessToken(HttpServletRequest request){
+        return request.getHeader("Authorization");
+    }
+
     //토큰에서 회원 추출
-    public String getUserPk(String token){
+    public String getUserLoginId(String token){
+        String accessToken = token.split("Bearer ")[1];
 //        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
-        return Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody().getSubject();
+        return Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(accessToken).getBody().getSubject();
     }
 
 }

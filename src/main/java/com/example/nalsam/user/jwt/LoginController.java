@@ -16,14 +16,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @Controller
+@RequiredArgsConstructor
 public class LoginController {
 
     private final LoginService loginService;
 
-    public LoginController(LoginService loginService, CustomUserDetailService customUserDetailService) {
-        this.loginService = loginService;
-    }
-
+    private final JwtTokenProvider jwtTokenProvider;
 
     @PostMapping("/login") // http 서블릿 세션 로그인
     public ResponseEntity<JwtToken> login(@RequestBody LoginRequest loginRequest) {
@@ -43,16 +41,28 @@ public class LoginController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/main") // http 서블릿 세션 로그아웃
-    public ResponseEntity<UserResponse> main(){
+    @PostMapping("/home") // http 서블릿 세션 로그아웃
+    public ResponseEntity<UserResponse> home(HttpServletRequest request){
 
-        return ResponseEntity.ok().body(loginService.main());
+        String accessToken = jwtTokenProvider.getAccessToken(request);
+
+        return ResponseEntity.ok().body(loginService.getUserResponse(accessToken));
     }
 
-//    @PostMapping("/testtest")
-//    public ResponseEntity<String> test(){
-//        loginService.test();
+
+    @PostMapping("/mainTest") // http 서블릿 세션 로그아웃
+    public ResponseEntity<UserResponse> main(){
+
+        return ResponseEntity.ok().body(loginService.mainTest());
+    }
+
+
+
+//    @PostMapping("/main2") // http 서블릿 세션 로그아웃
+//    public ResponseEntity<UserResponse> main2(HttpServletRequest request){
 //
-//        return ResponseEntity.ok().body("Success");
+//        request.getHeader("Authorization");
+//
+//        return ResponseEntity.ok().body(loginService.main2());
 //    }
 }

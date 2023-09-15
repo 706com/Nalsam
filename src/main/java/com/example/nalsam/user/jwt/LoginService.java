@@ -15,6 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -62,7 +63,7 @@ public class LoginService {
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
 //        System.out.println("5");
         //검증된 인증정보로 jwt 생성
-        JwtToken token = jwtTokenProvider.createToken(authentication,request.getLoginId());
+        JwtToken token = jwtTokenProvider.createToken(authentication);
 //        System.out.println("6");
         return token;
 
@@ -98,7 +99,28 @@ public class LoginService {
     }
 
     // jwt 토큰 확인 후 객체 전달
-    public UserResponse main(){
+    public UserResponse getUserResponse(String accessToken){
+
+        String getUsername = jwtTokenProvider.getUserLoginId(accessToken);
+
+        Users users = userRepository.findByLoginId(getUsername).orElseThrow();
+
+        Integer testOxygen = 90;   //산소포화도 테스트 데이터
+        Integer testHeartRate = 80; //심박수 테스트 데이터
+
+        return UserResponse.builder()
+                .loginId(users.getLoginId())
+                .userName(users.getName())
+                .birthDate(users.getBirthDate())
+                .isMale(users.getIsMale())
+                .symptom(users.getSymptom())
+                .oxygenSaturation(testOxygen)
+                .heartRate(testHeartRate)
+                .build();
+    }
+
+    // jwt 토큰 확인 후 객체 전달
+    public UserResponse mainTest(){
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
