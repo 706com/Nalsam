@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import com.example.nalsam.user.domain.User;
+import com.example.nalsam.user.domain.Users;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
@@ -23,16 +23,16 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    private final PasswordEncoder passwordEncoder;
+    private final PasswordEncoder encoder;
 
-    private final BCryptPasswordEncoder encoder;
+//    private final BCryptPasswordEncoder encoder;
 
 
     //회원 저장 기능 test
-    public User getUserTest(TestRequest request){
-        User user = userRepository.findByLoginId(request.getLoginId()).get();
+    public Users getUserTest(TestRequest request){
+        Users users = userRepository.findByLoginId(request.getLoginId()).get();
 
-        return user;
+        return users;
     }
 
     // 회원 저장 기능
@@ -49,7 +49,7 @@ public class UserService {
         Integer testOxygen = 90;   //산소포화도 테스트 데이터
         Integer testHeartRate = 80; //심박수 테스트 데이터
 
-        User user = User.builder()
+        Users users = Users.builder()
                 .loginId(userRequest.getLoginId())
                 .password(encPwd)
                 .name(userRequest.getUserName())
@@ -62,28 +62,28 @@ public class UserService {
                 .updateDateTime(localDateTime)
                 .build();
 
-        userRepository.save(user);
+        userRepository.save(users);
     }
 
     // 회원 조회 기능
     //  로그인ID 로 조회하기.
     public UserResponse showUserInfoById(String loginId){
 
-        User user = userRepository.findByLoginId(loginId).orElseThrow();
+        Users users = userRepository.findByLoginId(loginId).orElseThrow();
 
         return UserResponse.builder()
-                .loginId(user.getLoginId())
-                .userName(user.getName())
-                .birthDate(user.getBirthDate())
-                .isMale(user.getIsMale())
-                .symptom(user.getSymptom())
+                .loginId(users.getLoginId())
+                .userName(users.getName())
+                .birthDate(users.getBirthDate())
+                .isMale(users.getIsMale())
+                .symptom(users.getSymptom())
                 .build();
     }
 
     // 회원 조회 기능
     //  모든 회원 조회하기.
     public List<UserResponse> showUserInfoAll(){
-        List<User> getUsers = userRepository.findAll();
+        List<Users> getUsers = userRepository.findAll();
 
         List<UserResponse> getUserInfo = getUsers.stream()
                 .map(user -> UserResponse.builder()
@@ -110,9 +110,9 @@ public class UserService {
         }
 
         if(request.getNewPassword().equals(request.getAgainNewPassword())){
-            User user = userRepository.findByLoginId(request.getLoginId()).get();
+            Users users = userRepository.findByLoginId(request.getLoginId()).get();
             LocalDateTime now = LocalDateTime.now();
-            user.updatePassword(request.getNewPassword(), now);
+            users.updatePassword(request.getNewPassword(), now);
         }
     }
 
@@ -126,13 +126,13 @@ public class UserService {
             throw new PasswordNotCorrectException();
         }
 
-        User user = userRepository.findByLoginId(request.getLoginId()).get();
+        Users users = userRepository.findByLoginId(request.getLoginId()).get();
 
-        userRepository.delete(user);
+        userRepository.delete(users);
     }
 
     // 로그인 ID 로 회원 찾기.
-    public User findUserByLoginId(String userLoginId) {
+    public Users findUserByLoginId(String userLoginId) {
 
         return userRepository.findByLoginId(userLoginId).orElse(null);
 
@@ -145,9 +145,9 @@ public class UserService {
             throw new UserNotFoundException();
         }
 
-        User user = findUserByLoginId(request.getLoginId());
+        Users users = findUserByLoginId(request.getLoginId());
 
-        if(!passwordEncoder.matches(request.getPassword(),user.getPassword())){
+        if(!encoder.matches(request.getPassword(), users.getPassword())){
             throw new PasswordNotCorrectException();
         }
 

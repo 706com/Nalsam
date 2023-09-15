@@ -5,6 +5,7 @@ import com.example.nalsam.user.dto.request.UserRequest;
 import com.example.nalsam.user.dto.response.UserResponse;
 import com.example.nalsam.user.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,17 +20,15 @@ public class LoginController {
 
     private final LoginService loginService;
 
-    private final CustomUserDetailService customUserDetailService;
-
     public LoginController(LoginService loginService, CustomUserDetailService customUserDetailService) {
         this.loginService = loginService;
-        this.customUserDetailService = customUserDetailService;
     }
 
 
     @PostMapping("/login") // http 서블릿 세션 로그인
     public ResponseEntity<JwtToken> login(@RequestBody LoginRequest loginRequest) {
 
+//        System.out.println("1");
         JwtToken token = loginService.login(loginRequest);
 
         return ResponseEntity.ok().body(token);
@@ -41,19 +40,19 @@ public class LoginController {
     public ResponseEntity<Void> signup(@RequestBody UserRequest userRequest){
 
         loginService.createUser(userRequest);
-
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/mainn") // http 서블릿 세션 로그아웃
-    public ResponseEntity<String> main(){
+    @PostMapping("/main") // http 서블릿 세션 로그아웃
+    public ResponseEntity<UserResponse> main(){
 
-//        UserDetails userDetails = customUserDetailService.loadUserByUsername(loginId);
-//
-//        String test =  userDetails.getUsername();
-//        System.out.println(userDetails.getUsername());
-        String user = SecurityContextHolder.getContext().getAuthentication().getName();
-
-        return ResponseEntity.ok().body(user);
+        return ResponseEntity.ok().body(loginService.main());
     }
+
+//    @PostMapping("/testtest")
+//    public ResponseEntity<String> test(){
+//        loginService.test();
+//
+//        return ResponseEntity.ok().body("Success");
+//    }
 }

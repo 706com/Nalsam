@@ -24,14 +24,20 @@ public class UserResponse {
 
     private String symptom;
 
+    private Integer heartRate;
+
+    private Integer oxygenSaturation;
+
 
     @Builder
-    public UserResponse(String loginId, String userName,String birthDate, Integer isMale, String symptom) {
+    public UserResponse(String loginId, String userName,String birthDate, Integer isMale, String symptom,Integer heartRate, Integer oxygenSaturation) {
         this.loginId = loginId;
         this.userName = userName;
         this.birthDate = birthDate;
         this.isMale = isMale;
         this.symptom = symptom;
+        this.heartRate = heartRate;
+        this.oxygenSaturation = oxygenSaturation;
     }
 
 //    public static UserResponse of(){
