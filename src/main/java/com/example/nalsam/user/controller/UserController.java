@@ -1,6 +1,6 @@
 package com.example.nalsam.user.controller;
 
-import com.example.nalsam.user.domain.User;
+import com.example.nalsam.user.domain.Users;
 import com.example.nalsam.user.dto.request.TestRequest;
 import com.example.nalsam.user.dto.request.UserDeletionRequest;
 import com.example.nalsam.user.dto.request.UserPasswordRequest;
@@ -22,7 +22,7 @@ public class UserController {
 
     // < 회원 저장 TEST >
     @PostMapping("/test")
-    public ResponseEntity<User> createUserTest(@RequestBody TestRequest testRequest){
+    public ResponseEntity<Users> createUserTest(@RequestBody TestRequest testRequest){
 
         return ResponseEntity.ok().body(userService.getUserTest(testRequest));
     }
