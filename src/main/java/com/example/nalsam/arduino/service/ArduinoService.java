@@ -14,7 +14,7 @@ public class ArduinoService {
 	private final ArduinoRepository arduinoRepository;
 
     @Transactional
-    public void updateHealthData(Integer oxygenSaturation, Integer heartrate){
-    	arduinoRepository.findByLoginId("kwak1").updateHealthData(oxygenSaturation, heartrate);
+    public void updateHealthData(String LoginId, Integer oxygenSaturation, Integer heartrate){
+    	arduinoRepository.findByLoginId(LoginId).updateHealthData(oxygenSaturation, heartrate);
     }
 }

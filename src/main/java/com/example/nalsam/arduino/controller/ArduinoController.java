@@ -4,7 +4,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.nalsam.arduino.domain.HealthData;
 import com.example.nalsam.arduino.service.ArduinoService;
+import com.example.nalsam.user.jwt.LoginService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -13,12 +15,13 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/arduino")
 public class ArduinoController {
 	private final ArduinoService arduinoService;
+	private final LoginService loginService;
 
 	@RequestMapping("/healthdata")
-    public void updateHealthData(@RequestBody String request)
+    public void updateHealthData(@RequestBody HealthData healthData)
     {
-		String HealthData[] = request.replace("\"", "").replace("\\r\\n", "").split("/");
-    	if(!HealthData[0].equals("-1"))
-    		arduinoService.updateHealthData(Integer.parseInt(HealthData[0]), Integer.parseInt(HealthData[1]));
+   		arduinoService.updateHealthData(loginService.getUserResponse(healthData.getToken()).getLoginId(),
+   										Integer.parseInt(healthData.getOxygensaturation()),
+   										Integer.parseInt(healthData.getHeartrate()));
     }
 }
