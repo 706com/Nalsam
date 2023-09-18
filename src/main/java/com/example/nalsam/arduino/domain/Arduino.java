@@ -27,11 +27,11 @@ public class Arduino {
     private Integer oxygenSaturation;
     
     @Column(name = "heart_rate")
-    private Integer heartrate;
+    private Integer heartRate;
     
-    public void updateHealthData(Integer oxygenSaturation, Integer heartrate) {
+    public void updateHealthData(Integer oxygenSaturation, Integer heartRate) {
         this.oxygenSaturation = oxygenSaturation;
-        this.heartrate = heartrate;
+        this.heartRate = heartRate;
     }
     
 }
