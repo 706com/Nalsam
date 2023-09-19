@@ -23,14 +23,19 @@ public class ChatController {
 
     private final ChatCompletionService chatCompletionService;
 
-    @PostMapping("")
-    public String chat(@RequestBody TestRequest testRequest){
+    @PostMapping("/question")
+    public ResponseEntity<String>  chat(@RequestBody QuestionRequest questionRequest){
 
-        if(!StringUtils.hasLength(testRequest.getQuestion())) {
-            throw new RuntimeException();
+        try {
+            String response = chatService.getChatResponse(questionRequest);
+
+            System.out.println("응답 : "+response);
+            // 응답을 프론트엔드로 POST로 반환
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            // 오류 발생 시 오류 응답 반환
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error processing the question.");
         }
-
-        return chatCompletionService.chatCompletions(testRequest.getQuestion());
     }
     //chat-gpt 와 간단한 채팅 서비스 소스
     @PostMapping("/healthStatus")
