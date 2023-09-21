@@ -1,10 +1,7 @@
 package com.example.nalsam.chatbot.service;
 
 
-import com.example.nalsam.chatbot.dto.request.AirQualityRequest;
-import com.example.nalsam.chatbot.dto.request.HealthRequest;
-import com.example.nalsam.chatbot.dto.request.PlaceRecommend;
-import com.example.nalsam.chatbot.dto.request.SymtomCaution;
+import com.example.nalsam.chatbot.dto.request.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +10,13 @@ import org.springframework.stereotype.Service;
 public class ChatService {
 
     private final ChatCompletionService chatCompletionService;
+    public String getChatResponse(QuestionRequest questionRequest) {
+
+        // 받은 정보로 질문 생성
+        String question = questionRequest.getQuestion() + ", 5줄이내로 알려줘 ";
+        System.out.println(question);
+        return chatCompletionService.chatCompletions(question);
+    }
     public String getChatResponse(HealthRequest healthRequest) {
 
         // 받은 정보로 질문 생성
@@ -30,7 +34,7 @@ public class ChatService {
         // 받은 정보로 질문 생성
         String question = "현재 대기질이 so2: " + airQualityRequest.getSo2Value()+", Co: "+airQualityRequest.getCoValue()
                 + ", No2: "+airQualityRequest.getNo2Value()+ ", O3: " +airQualityRequest.getO3Value() + ", pm10: "+ airQualityRequest.getPm10Value()
-                + ", pm25:" +airQualityRequest.getPm25Value()+" 인 상태인데 통합대기환경지수를 고려하여 각각 어떤 대기상태인지 간단하게 알려줘";
+                + ", pm25:" +airQualityRequest.getPm25Value()+" 인 상태인데 통합대기환경지수를 고려하여 각각 어떤 대기상태인지 5줄이내로 알려줘";
 
         System.out.println(question);
         // Chat-GPT에게 질문 전송하여 응답 받기
