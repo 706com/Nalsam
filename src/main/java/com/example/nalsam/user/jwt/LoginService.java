@@ -105,8 +105,8 @@ public class LoginService {
 
         Users users = userRepository.findByLoginId(getUsername).orElseThrow();
 
-        Integer testOxygen = 90;   //산소포화도 테스트 데이터
-        Integer testHeartRate = 80; //심박수 테스트 데이터
+//        Integer testOxygen = 90;   //산소포화도 테스트 데이터
+//        Integer testHeartRate = 80; //심박수 테스트 데이터
 
         return UserResponse.builder()
                 .loginId(users.getLoginId())
@@ -114,8 +114,8 @@ public class LoginService {
                 .birthDate(users.getBirthDate())
                 .isMale(users.getIsMale())
                 .symptom(users.getSymptom())
-                .oxygenSaturation(testOxygen)
-                .heartRate(testHeartRate)
+                .oxygenSaturation(users.getOxygenSaturation())
+                .heartRate(users.getHeartRate())
                 .build();
     }
 
@@ -126,8 +126,8 @@ public class LoginService {
 
         Users users = userRepository.findByLoginId(username).orElseThrow();
 
-        Integer testOxygen = 90;   //산소포화도 테스트 데이터
-        Integer testHeartRate = 80; //심박수 테스트 데이터
+//        Integer testOxygen = 90;   //산소포화도 테스트 데이터
+//        Integer testHeartRate = 80; //심박수 테스트 데이터
 
         return UserResponse.builder()
                 .loginId(users.getLoginId())
@@ -135,8 +135,8 @@ public class LoginService {
                 .birthDate(users.getBirthDate())
                 .isMale(users.getIsMale())
                 .symptom(users.getSymptom())
-                .oxygenSaturation(testOxygen)
-                .heartRate(testHeartRate)
+                .oxygenSaturation(users.getOxygenSaturation())
+                .heartRate(users.getHeartRate())
                 .build();
     }
 
