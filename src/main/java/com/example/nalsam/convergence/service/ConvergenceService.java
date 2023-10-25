@@ -3,7 +3,7 @@ package com.example.nalsam.convergence.service;
 import org.springframework.stereotype.Service;
 
 @Service
-public class OutingService {
+public class ConvergenceService {
 
     // Todo : 데이터 가공
     // algorithm
