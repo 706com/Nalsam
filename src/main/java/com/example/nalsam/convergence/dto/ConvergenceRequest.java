@@ -18,7 +18,7 @@ public class ConvergenceRequest {
     //날씨 데이터
     private Double temperature; //기온
     private int precipitation; //강수량
-    private int Humidity;       //습도
+    private int humidity;       //습도
 
 
 
