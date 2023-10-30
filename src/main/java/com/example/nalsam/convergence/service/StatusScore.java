@@ -1,4 +1,4 @@
-package com.example.nalsam.convergence.dto;
+package com.example.nalsam.convergence.service;
 
 public class StatusScore {
 	
