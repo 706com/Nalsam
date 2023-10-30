@@ -1,10 +1,17 @@
 package com.example.nalsam.convergence.service;
 
+import com.example.nalsam.convergence.dto.ConvergenceData;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ConvergenceService {
 
+    ConvergenceData convergenceData = new ConvergenceData();
+
+    public int airqualiyScore(){
+        return -1;
+
+    }
     // Todo : 데이터 가공
     // algorithm
     // 1. 데이터를 외부에서 받아온다. (Request)
@@ -20,7 +27,7 @@ public class ConvergenceService {
     //
     //    3)나이 (유아동기0~15)-1 , 청년기(16~60) 0 , 노년기(61~) -2
     //       3-1)심박수 (보통 60~100 ,
-    //
+
 
 //   provide천식Score(); -> 86
 
