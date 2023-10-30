@@ -4,6 +4,10 @@ import com.example.nalsam.convergence.dto.ConvergenceData;
 import com.example.nalsam.convergence.dto.ConvergenceRequest;
 import com.example.nalsam.user.domain.Users;
 import com.example.nalsam.user.service.UserService;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -13,6 +17,8 @@ public class mappingData {
     public ConvergenceData colletConvergenceData(ConvergenceRequest convergenceRequest){
         String loginId = convergenceRequest.getLoginId();
         Users user = userService.findUserByLoginId(loginId);
+
+        int age = calculateAge(user.getBirthDate());
 
         return ConvergenceData.builder()
                 .pm10Grade(convergenceRequest.getPm10Grade())
@@ -24,10 +30,17 @@ public class mappingData {
                 .temperature(convergenceRequest.getTemperature())
                 .precipitation(convergenceRequest.getPrecipitation())
                 .humidity(convergenceRequest.getHumidity())
-                .age(user.getBirthDate())
+                .age(age)
                 .heartRate(user.getHeartRate())
                 .oxygenSaturation(user.getOxygenSaturation())
                 .symtom(user.getSymptom())
                 .build();
+    }
+
+    private int calculateAge(String birthDate){
+        Integer userBirthYear = Integer.parseInt(birthDate.substring(0,4));
+        Integer nowYear = LocalDate.now().getYear();
+
+        return nowYear-userBirthYear;
     }
 }
