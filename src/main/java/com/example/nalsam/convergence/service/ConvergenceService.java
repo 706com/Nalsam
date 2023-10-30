@@ -2,6 +2,7 @@ package com.example.nalsam.convergence.service;
 
 import com.example.nalsam.convergence.dto.ConvergenceData;
 import com.example.nalsam.convergence.dto.ConvergenceRequest;
+import com.example.nalsam.convergence.dto.ConvergenceResponse;
 import com.example.nalsam.convergence.dto.StatusScore;
 import com.example.nalsam.user.domain.Users;
 import com.example.nalsam.user.service.UserService;
@@ -45,28 +46,23 @@ public class ConvergenceService {
         return nowYear-userBirthYear;
     }
 
-    // Todo : 데이터 가공
-    // algorithm
-    // 1. 데이터를 외부에서 받아온다. (Request)
-    // 2. 1)if 질환
-    //       1-1)if 대기질6가지 당 점수 측정(좋음 , 보통 , 나쁨 , 매우나쁨)  * 0, 1, 2, 3
+    public ConvergenceResponse measureConvergenceScore(ConvergenceData convergenceData){
+        ConvergenceResponse convergenceResponse;
 
-    //       1-2)if 산소포화도 (정상(100~95) , 주의(94~90) , 저산소증(90이하)(-2))  tempScore -1
-    //           1-2-1)if(대기질)
-    //               tempScore * 몇배수
-    //
-    //    2)if 날씨
-    //       기온 , 습도 , 강수량 따른 고정적 -1
-    //
-    //    3)나이 (유아동기0~15)-1 , 청년기(16~60) 0 , 노년기(61~) -2
-    //       3-1)심박수 (보통 60~100 ,
-//   provide천식Score(); -> 86
-//   provide폐렴Socre();  -> 90   ->88
-
-    public void measureConvergenceScore(ConvergenceData convergenceData){
         StatusScore statusScore = new StatusScore(convergenceData.getAge(),convergenceData.getSymtom());
         HealthScore healthScore = new HealthScore(convergenceData.getHeartRate(),convergenceData.getOxygenSaturation());
-        WeatherScore weatherScore = new WeatherScore()
+        WeatherScore weatherScore = new WeatherScore(convergenceData.getTemperature(),convergenceData.getHumidity(),convergenceData.getPrecipitation());
+        AirQualityScore airQualityScore = new AirQualityScore(convergenceData.getPm10Grade(),convergenceData.getPm25Grade(),convergenceData.getSo2Grade(),
+                convergenceData.getO3Grade(),convergenceData.getNo2Grade(),convergenceData.getCoGrade());
+
+        int convergenceScore = 0;
+        convergenceScore += statusScore.measureStatusScore();
+        convergenceScore += healthScore.measureHealthScore();
+        convergenceScore += weatherScore.measureWeatherScore();
+        convergenceScore += airQualityScore.measureWeatherScore();
+
+        convergenceResponse = new ConvergenceResponse(convergenceScore);
+        return  convergenceResponse;
     }
 
 }
