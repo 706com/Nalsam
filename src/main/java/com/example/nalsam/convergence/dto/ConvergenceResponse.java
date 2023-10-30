@@ -1,9 +1,19 @@
 package com.example.nalsam.convergence.dto;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class ConvergenceResponse {
 
-    private String score;
+    private Integer score;
     private String explantion;
     // Todo : 사용자명 , Score,
     //  문자열 :질환 , 산소포화도 , 심박수 , 외출적합도
+
+    public ConvergenceResponse(Integer score){
+        this.score = score;
+        this.explantion ="";
+    }
 }
