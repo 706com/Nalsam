@@ -11,7 +11,7 @@ public class StatusScore {
 		this.symtom = symtomStr.trim().split(",");
 	}
 	
-	public int measureStatus() {
+	public int measureStatusScore() {
 		boolean flag = false;
 		
 		for(String i : symtom) {
