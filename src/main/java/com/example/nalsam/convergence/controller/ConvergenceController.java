@@ -1,5 +1,6 @@
 package com.example.nalsam.convergence.controller;
 
+import com.example.nalsam.convergence.dto.ConvergenceData;
 import com.example.nalsam.convergence.dto.ConvergenceRequest;
 import com.example.nalsam.convergence.dto.ConvergenceResponse;
 import com.example.nalsam.convergence.service.ConvergenceService;
@@ -21,9 +22,10 @@ public class ConvergenceController {
     
     @GetMapping("/get")
     ResponseEntity<ConvergenceResponse> getConvergenceData(@RequestBody ConvergenceRequest request){
-        convergenceService.method(request);
+        ConvergenceData convergenceData = convergenceService.colletConvergenceData(request);
+        ConvergenceResponse convergenceResponse = convergenceService.measureConvergenceScore(convergenceData);
         //Todo : Response 안에 넣어야 할 데이터 : outingService 에서 점수, String 출력
-        return ResponseEntity.ok( "RESPONSE 넣기");
+        return ResponseEntity.ok(convergenceResponse);
     }
     
 }
