@@ -1,17 +1,49 @@
 package com.example.nalsam.convergence.service;
 
 import com.example.nalsam.convergence.dto.ConvergenceData;
+import com.example.nalsam.convergence.dto.ConvergenceRequest;
+import com.example.nalsam.user.domain.Users;
+import com.example.nalsam.user.service.UserService;
+import java.time.LocalDate;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class ConvergenceService {
 
-    ConvergenceData convergenceData = new ConvergenceData();
+    private UserService userService;
 
-    public int airqualiyScore(){
-        return -1;
+    public ConvergenceData colletConvergenceData(ConvergenceRequest convergenceRequest){
+        String loginId = convergenceRequest.getLoginId();
+        Users user = userService.findUserByLoginId(loginId);
 
+        int age = calculateAge(user.getBirthDate());
+
+        return ConvergenceData.builder()
+                .pm10Grade(convergenceRequest.getPm10Grade())
+                .pm25Grade(convergenceRequest.getPm25Grade())
+                .so2Grade(convergenceRequest.getSo2Grade())
+                .o3Grade(convergenceRequest.getO3Grade())
+                .no2Grade(convergenceRequest.getNo2Grade())
+                .coGrade(convergenceRequest.getCoGrade())
+                .temperature(convergenceRequest.getTemperature())
+                .precipitation(convergenceRequest.getPrecipitation())
+                .humidity(convergenceRequest.getHumidity())
+                .age(age)
+                .heartRate(user.getHeartRate())
+                .oxygenSaturation(user.getOxygenSaturation())
+                .symtom(user.getSymptom())
+                .build();
     }
+
+    private int calculateAge(String birthDate){
+        Integer userBirthYear = Integer.parseInt(birthDate.substring(0,4));
+        Integer nowYear = LocalDate.now().getYear();
+
+        return nowYear-userBirthYear;
+    }
+
     // Todo : 데이터 가공
     // algorithm
     // 1. 데이터를 외부에서 받아온다. (Request)
@@ -27,10 +59,11 @@ public class ConvergenceService {
     //
     //    3)나이 (유아동기0~15)-1 , 청년기(16~60) 0 , 노년기(61~) -2
     //       3-1)심박수 (보통 60~100 ,
-
-
 //   provide천식Score(); -> 86
-
 //   provide폐렴Socre();  -> 90   ->88
+
+    public void measureConvergenceScore(ConvergenceData convergenceData){
+
+    }
 
 }
