@@ -2,6 +2,7 @@ package com.example.nalsam.convergence.service;
 
 import com.example.nalsam.convergence.dto.ConvergenceData;
 import com.example.nalsam.convergence.dto.ConvergenceRequest;
+import com.example.nalsam.convergence.dto.StatusScore;
 import com.example.nalsam.user.domain.Users;
 import com.example.nalsam.user.service.UserService;
 import java.time.LocalDate;
@@ -63,7 +64,9 @@ public class ConvergenceService {
 //   provide폐렴Socre();  -> 90   ->88
 
     public void measureConvergenceScore(ConvergenceData convergenceData){
-
+        StatusScore statusScore = new StatusScore(convergenceData.getAge(),convergenceData.getSymtom());
+        HealthScore healthScore = new HealthScore(convergenceData.getHeartRate(),convergenceData.getOxygenSaturation());
+        WeatherScore weatherScore = new WeatherScore()
     }
 
 }
