@@ -1,14 +1,16 @@
 package com.example.nalsam.convergence.service;
 
+import java.time.LocalDate;
+
+import org.springframework.stereotype.Service;
+
 import com.example.nalsam.convergence.dto.ConvergenceData;
 import com.example.nalsam.convergence.dto.ConvergenceRequest;
 import com.example.nalsam.convergence.dto.ConvergenceResponse;
-import com.example.nalsam.convergence.dto.StatusScore;
 import com.example.nalsam.user.domain.Users;
 import com.example.nalsam.user.service.UserService;
-import java.time.LocalDate;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
@@ -53,13 +55,13 @@ public class ConvergenceService {
         HealthScore healthScore = new HealthScore(convergenceData.getHeartRate(),convergenceData.getOxygenSaturation());
         WeatherScore weatherScore = new WeatherScore(convergenceData.getTemperature(),convergenceData.getHumidity(),convergenceData.getPrecipitation());
         AirQualityScore airQualityScore = new AirQualityScore(convergenceData.getPm10Grade(),convergenceData.getPm25Grade(),convergenceData.getSo2Grade(),
-                convergenceData.getO3Grade(),convergenceData.getNo2Grade(),convergenceData.getCoGrade());
+                convergenceData.getO3Grade(),convergenceData.getNo2Grade(),convergenceData.getCoGrade(),convergenceData.getSymtom());
 
         int convergenceScore = 0;
         convergenceScore += statusScore.measureStatusScore();
         convergenceScore += healthScore.measureHealthScore();
         convergenceScore += weatherScore.measureWeatherScore();
-        convergenceScore += airQualityScore.measureWeatherScore();
+        convergenceScore += airQualityScore.measureAirQualityScore();
 
         convergenceResponse = new ConvergenceResponse(convergenceScore);
         return  convergenceResponse;
