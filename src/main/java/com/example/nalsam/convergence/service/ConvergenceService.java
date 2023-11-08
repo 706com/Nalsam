@@ -2,6 +2,7 @@ package com.example.nalsam.convergence.service;
 
 import java.time.LocalDate;
 
+import java.util.stream.Stream;
 import org.springframework.stereotype.Service;
 
 import com.example.nalsam.convergence.dto.ConvergenceData;
@@ -16,9 +17,12 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ConvergenceService {
 
-    private UserService userService;
+    private final UserService userService;
+    private static final String defaultExplanation =
+            "현재 %s님의 %s 상태를 고려하여, 산소포화도 %d%% 심박수 %d BPM, 대기질, 날씨를 융합한 외출상태 점수는 %s점 입니다. 이는 %s상태를 뜻합니다.";
 
-    public ConvergenceData colletConvergenceData(ConvergenceRequest convergenceRequest){
+
+    public ConvergenceData colletConvergenceData(ConvergenceRequest convergenceRequest) {
         String loginId = convergenceRequest.getLoginId();
         Users user = userService.findUserByLoginId(loginId);
 
@@ -34,6 +38,7 @@ public class ConvergenceService {
                 .temperature(convergenceRequest.getTemperature())
                 .precipitation(convergenceRequest.getPrecipitation())
                 .humidity(convergenceRequest.getHumidity())
+                .userName(user.getName())
                 .age(age)
                 .heartRate(user.getHeartRate())
                 .oxygenSaturation(user.getOxygenSaturation())
@@ -41,30 +46,53 @@ public class ConvergenceService {
                 .build();
     }
 
-    private int calculateAge(String birthDate){
-        Integer userBirthYear = Integer.parseInt(birthDate.substring(0,4));
+    private int calculateAge(String birthDate) {
+        Integer userBirthYear = Integer.parseInt(birthDate.substring(0, 4));
         Integer nowYear = LocalDate.now().getYear();
 
-        return nowYear-userBirthYear;
+        return nowYear - userBirthYear;
     }
 
-    public ConvergenceResponse measureConvergenceScore(ConvergenceData convergenceData){
-        ConvergenceResponse convergenceResponse;
+    public ConvergenceResponse measureConvergenceScore(ConvergenceData convergenceData) {
+        int convergenceScore = convergenceScore(convergenceData);
+        String convergenceExplaintoin = convergenceExplaintoin(convergenceScore, convergenceData);
+        return new ConvergenceResponse(convergenceScore, convergenceExplaintoin);
+    }
 
-        StatusScore statusScore = new StatusScore(convergenceData.getAge(),convergenceData.getSymtom());
-        HealthScore healthScore = new HealthScore(convergenceData.getHeartRate(),convergenceData.getOxygenSaturation());
-        WeatherScore weatherScore = new WeatherScore(convergenceData.getTemperature(),convergenceData.getHumidity(),convergenceData.getPrecipitation());
-        AirQualityScore airQualityScore = new AirQualityScore(convergenceData.getPm10Grade(),convergenceData.getPm25Grade(),convergenceData.getSo2Grade(),
-                convergenceData.getO3Grade(),convergenceData.getNo2Grade(),convergenceData.getCoGrade(),convergenceData.getSymtom());
+    private int convergenceScore(ConvergenceData convergenceData) {
+        int convergenceScore = Stream.of(
+                        new StatusScore(convergenceData.getAge(), convergenceData.getSymtom()).measureStatusScore(),
+                        new HealthScore(convergenceData.getHeartRate(),
+                                convergenceData.getOxygenSaturation()).measureHealthScore(),
+                        new WeatherScore(convergenceData.getTemperature(), convergenceData.getHumidity(),
+                                convergenceData.getPrecipitation()).measureWeatherScore(),
+                        new AirQualityScore(convergenceData.getPm10Grade(), convergenceData.getPm25Grade(),
+                                convergenceData.getSo2Grade(),
+                                convergenceData.getO3Grade(), convergenceData.getNo2Grade(), convergenceData.getCoGrade(),
+                                convergenceData.getSymtom()).measureAirQualityScore())
+                .reduce(0, Integer::sum);
+        return convergenceScore;
+    }
 
-        int convergenceScore = 0;
-        convergenceScore += statusScore.measureStatusScore();
-        convergenceScore += healthScore.measureHealthScore();
-        convergenceScore += weatherScore.measureWeatherScore();
-        convergenceScore += airQualityScore.measureAirQualityScore();
+    private String convergenceExplaintoin(int convergenceScore, ConvergenceData convergenceData) {
+        String goingOutMessage = generateGoingOutMessage(convergenceScore);
+        String formattedMessage = String.format(defaultExplanation, convergenceData.getUserName(),
+                convergenceData.getSymtom(), convergenceData.getOxygenSaturation(), convergenceData.getHeartRate(),
+                convergenceScore, goingOutMessage);
+        return formattedMessage;
+    }
 
-        convergenceResponse = new ConvergenceResponse(convergenceScore);
-        return  convergenceResponse;
+    private String generateGoingOutMessage(int convergenceScore) {
+        if (convergenceScore >= 0 && convergenceScore <= 33) {
+            return "외출 부적합";
+        }
+        if (convergenceScore >= 34 && convergenceScore <= 50) {
+            return "외출자제 요망";
+        }
+        if (convergenceScore >= 51 && convergenceScore <= 66) {
+            return "외출자체 판단";
+        }
+        return "외출 적합";
     }
 
 }

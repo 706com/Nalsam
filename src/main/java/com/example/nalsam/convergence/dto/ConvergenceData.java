@@ -1,9 +1,13 @@
 package com.example.nalsam.convergence.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+//@NoArgsConstructor
+//@AllArgsConstructor
 public class ConvergenceData {
     //대기질 데이터
     private String pm10Grade ;  //미세먼지
@@ -19,6 +23,7 @@ public class ConvergenceData {
     private int humidity;       //습도
 
     //사용자 데이터
+    private String userName;
     private Integer age; //나이
     private Integer heartRate; //심박수
     private Integer oxygenSaturation; // 산소포화도
@@ -26,7 +31,7 @@ public class ConvergenceData {
 
     @Builder
     public ConvergenceData(String pm10Grade, String pm25Grade, String so2Grade, String o3Grade, String no2Grade,
-                           String coGrade, Double temperature, int precipitation, int humidity, Integer age,
+                           String coGrade, Double temperature, int precipitation, int humidity,String userName, Integer age,
                            Integer heartRate, Integer oxygenSaturation, String symtom) {
         this.pm10Grade = pm10Grade;
         this.pm25Grade = pm25Grade;
@@ -37,6 +42,7 @@ public class ConvergenceData {
         this.temperature = temperature;
         this.precipitation = precipitation;
         this.humidity = humidity;
+        this.userName = userName;
         this.age = age;
         this.heartRate = heartRate;
         this.oxygenSaturation = oxygenSaturation;

@@ -31,6 +31,8 @@ public class AirQualityScore {
         airQualityScore += getGradeScoreSub(o3Grade, symtom);
         airQualityScore += getGradeScore(no2Grade, "");
         airQualityScore += getGradeScore(coGrade, "");
+        System.out.println("대기질 점수 : "+ airQualityScore);
+
 
         return airQualityScore;
     }

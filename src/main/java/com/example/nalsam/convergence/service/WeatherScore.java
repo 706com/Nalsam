@@ -19,6 +19,7 @@ public class WeatherScore {
 
     public int measureWeatherScore() {
         weatherScore = measureTemperatuerScore() + measureHumidityScore() + measurePrecipitationScore();
+        System.out.println("날씨 : "+weatherScore);
         return weatherScore;
     }
 

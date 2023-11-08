@@ -8,12 +8,12 @@ import lombok.Setter;
 public class ConvergenceResponse {
 
     private Integer score;
-    private String explantion;
+    private String convergenceExplantion;
     // Todo : 사용자명 , Score,
     //  문자열 :질환 , 산소포화도 , 심박수 , 외출적합도
 
-    public ConvergenceResponse(Integer score){
+    public ConvergenceResponse(Integer score,String convergenceExplantion){
         this.score = score;
-        this.explantion ="";
+        this.convergenceExplantion =convergenceExplantion;
     }
 }

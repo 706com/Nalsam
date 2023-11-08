@@ -1,31 +1,31 @@
 package com.example.nalsam.convergence.controller;
 
+import com.example.nalsam.chatbot.dto.request.SymtomCaution;
 import com.example.nalsam.convergence.dto.ConvergenceData;
 import com.example.nalsam.convergence.dto.ConvergenceRequest;
 import com.example.nalsam.convergence.dto.ConvergenceResponse;
 import com.example.nalsam.convergence.service.ConvergenceService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@RequiredArgsConstructor
 @RestController
-@RequestMapping("/convergence")
+@Slf4j
 public class ConvergenceController {
-    // Todo : 객체 요청 -> 대기질 6가지, 날씨 3가지 , 사용자정보 6가지
-    private ConvergenceService convergenceService;
+    private final ConvergenceService convergenceService;
 
-    public ConvergenceController(ConvergenceService convergenceService) {
-        this.convergenceService = convergenceService;
-    }
-    
-    @GetMapping("/get")
-    ResponseEntity<ConvergenceResponse> getConvergenceData(@RequestBody ConvergenceRequest request){
+    @PostMapping("/convergence")
+    public ResponseEntity<ConvergenceResponse> convergenc(@RequestBody ConvergenceRequest request){
         ConvergenceData convergenceData = convergenceService.colletConvergenceData(request);
+        System.out.println("심박수 : "+convergenceData.getHeartRate());
+        System.out.println("산소포화도 : "+convergenceData.getOxygenSaturation());
         ConvergenceResponse convergenceResponse = convergenceService.measureConvergenceScore(convergenceData);
-        //Todo : Response 안에 넣어야 할 데이터 : outingService 에서 점수, String 출력
         return ResponseEntity.ok(convergenceResponse);
     }
-    
+
 }

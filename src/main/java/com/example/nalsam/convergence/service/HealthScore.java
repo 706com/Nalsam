@@ -14,26 +14,34 @@ public class HealthScore {
         this.score = 0;
     }
 
-    public int measureHealthScore(){
+    public int measureHealthScore() {
         measureHeartRateScore();
         measureOxygenSaturationScore();
-        return this.score;
+        System.out.println("건강점수 : "+ score);
+        return score;
     }
 
-    private void measureHeartRateScore(){
-        if(heartRate>=100){
-            score+=5;
+    private void measureHeartRateScore() {
+        if (heartRate > 100) {
+            score += 3;
         }
-        else if(heartRate<60){
-            score+=5;
+        if (heartRate >= 60 && heartRate <= 100) {
+            score += 5;
         }
     }
-    private void measureOxygenSaturationScore(){
-        if(90<=oxygenSaturation && oxygenSaturation<=94){
-            this.score += 10;
+
+    private void measureOxygenSaturationScore() {
+        if (oxygenSaturation > 95) {
+            score += 15;
         }
-        else if(oxygenSaturation<90){
-            this.score += 20;
+        if (oxygenSaturation >= 90 && oxygenSaturation < 95) {
+            score += 5;
         }
+    }
+
+    public static void main(String[] args) {
+        HealthScore healthScore = new HealthScore(95, 90);
+        int score = healthScore.measureHealthScore();
+        System.out.println("건강 점수 : " + score);
     }
 }
