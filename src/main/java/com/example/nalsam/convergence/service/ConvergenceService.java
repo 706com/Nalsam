@@ -1,13 +1,16 @@
 package com.example.nalsam.convergence.service;
 
 import java.time.LocalDate;
-
 import java.util.stream.Stream;
+
+import javax.transaction.Transactional;
+
 import org.springframework.stereotype.Service;
 
 import com.example.nalsam.convergence.dto.ConvergenceData;
 import com.example.nalsam.convergence.dto.ConvergenceRequest;
 import com.example.nalsam.convergence.dto.ConvergenceResponse;
+import com.example.nalsam.convergence.repository.ConvergenceRepository;
 import com.example.nalsam.user.domain.Users;
 import com.example.nalsam.user.service.UserService;
 
@@ -18,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 public class ConvergenceService {
 
     private final UserService userService;
+    private final ConvergenceRepository	convergenceRepository;
     private static final String defaultExplanation =
             "현재 %s님의 %s 상태를 고려하여, 산소포화도 %d%% 심박수 %d BPM, 대기질, 날씨를 융합한 외출상태 점수는 %s점 입니다. 이는 %s상태를 뜻합니다.";
 
@@ -93,6 +97,11 @@ public class ConvergenceService {
             return "외출자체 판단";
         }
         return "외출 적합";
+    }
+    
+    @Transactional
+    public void updateConvergence(String LoginId, Integer score, String convergenceExplantion){
+    	convergenceRepository.findByLoginId(LoginId).updateConvergence(score, convergenceExplantion);
     }
 
 }
