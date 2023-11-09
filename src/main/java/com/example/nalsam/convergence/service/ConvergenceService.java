@@ -23,7 +23,7 @@ public class ConvergenceService {
     private final UserService userService;
     private final ConvergenceRepository	convergenceRepository;
     private static final String defaultExplanation =
-            "현재 %s님의 %s 상태를 고려하여, 산소포화도 %d%% 심박수 %d BPM, 대기질, 날씨를 융합한 외출상태 점수는 %s점 입니다. 이는 %s상태를 뜻합니다.";
+            "현재 %s님의 %s 상태를 고려하여, 산소포화도 %d%% 심박수 %d BPM, 대기질, 날씨를 융합한 외출상태 점수는 %s점 입니다. 이는 %s 상태를 뜻합니다.";
 
 
     public ConvergenceData colletConvergenceData(ConvergenceRequest convergenceRequest) {
@@ -87,13 +87,13 @@ public class ConvergenceService {
     }
 
     private String generateGoingOutMessage(int convergenceScore) {
-        if (convergenceScore >= 0 && convergenceScore <= 33) {
+        if (convergenceScore >= 0 && convergenceScore <= 45) {
             return "외출 부적합";
         }
-        if (convergenceScore >= 34 && convergenceScore <= 50) {
+        if (convergenceScore >= 46 && convergenceScore <= 55) {
             return "외출자제 요망";
         }
-        if (convergenceScore >= 51 && convergenceScore <= 66) {
+        if (convergenceScore >= 56 && convergenceScore <= 70) {
             return "외출자체 판단";
         }
         return "외출 적합";
