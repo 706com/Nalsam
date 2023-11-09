@@ -67,7 +67,7 @@ public class WebSecurityConfig {
 //                                .antMatchers("/user/show/all").hasRole("ADMIN")
                                         // /user 로 시작하는 요청은 USER 권한이 있는 유저에게만 허용
                                         // 그 외의 모든 요청은 인증 필요
-                                        .anyRequest().authenticated()
+//                                        .anyRequest().authenticated()
                 )
                 // JwtAuthenticationFilter를 UsernamePasswordAuthenticationFilter 전에 넣기
                 // -> UsernamePasswordAuthenticationFilter 로 가기 전에 내가 직접 만든 JwtAuthenticationFilter를 실행하겠다.
