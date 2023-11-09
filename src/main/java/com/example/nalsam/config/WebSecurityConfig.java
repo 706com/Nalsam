@@ -58,16 +58,9 @@ public class WebSecurityConfig {
                 // 조건별 요청 허용,제한 설정
                 .authorizeRequests(authorizeRequests ->
                                 authorizeRequests
-//                                 회원가입과 로그인만 모두 승인
-//                                        .antMatchers("/login", "/user/save", "/signup", "/weather", "/main", "/air",
-//                                                "/weatherForecast", "/home", "/chatbot/**", "/convergence").permitAll()
+//                                          모두승인
                                         .antMatchers("/**").permitAll()
-//                                .antMatchers("/login","/user/save","/signup").permitAll()
-                                        // /air, weather로 시작하는 요청은 MASTER 권한이 있는 유저에게만 허용
-//                                .antMatchers("/user/show/all").hasRole("ADMIN")
-                                        // /user 로 시작하는 요청은 USER 권한이 있는 유저에게만 허용
-                                        // 그 외의 모든 요청은 인증 필요
-//                                        .anyRequest().authenticated()
+                                        .anyRequest().authenticated()
                 )
                 // JwtAuthenticationFilter를 UsernamePasswordAuthenticationFilter 전에 넣기
                 // -> UsernamePasswordAuthenticationFilter 로 가기 전에 내가 직접 만든 JwtAuthenticationFilter를 실행하겠다.
