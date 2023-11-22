@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
@@ -34,6 +35,7 @@ public class WeatherForecastApiCaller {
         this.weatherForecastApi = retrofit.create(WeatherForecastApi.class);
     }
 
+    @Cacheable(value = "WeatherForecastCache", key = "#date + '_' + #time+ '_' + #nx+ '_' + #ny + #sido+ '_' + #gu")
     public WeatherForecastDto getWeatherForecast(String date , String time , String nx , String ny, String sido, String gu) {
         try {
             var call = weatherForecastApi.getWeatherForecast(SERVICE_KEY,"json",1,1000,date, time, nx, ny);               // Todo : nx,ny 작업

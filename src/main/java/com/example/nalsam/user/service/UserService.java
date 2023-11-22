@@ -7,8 +7,10 @@ import com.example.nalsam.user.exception.UserAlreadyExistException;
 import com.example.nalsam.user.exception.UserNotFoundException;
 import com.example.nalsam.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import com.example.nalsam.user.domain.User;
+import com.example.nalsam.user.domain.Users;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
@@ -21,69 +23,74 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    private final PasswordEncoder encoder;
+
+//    private final BCryptPasswordEncoder encoder;
+
 
     //회원 저장 기능 test
-    public User getUserTest(TestRequest request){
-        User user = userRepository.findByLoginId(request.getLoginId()).get();
+    public Users getUserTest(TestRequest request){
+        Users users = userRepository.findByLoginId(request.getLoginId()).get();
 
-        return user;
+        return users;
     }
 
     // 회원 저장 기능
     public void saveUserProfile(UserRequest userRequest){
 
-        if(!userRepository.existsByLoginId(userRequest.getLoginId())){
+        if(userRepository.existsByLoginId(userRequest.getLoginId())){
             throw new UserAlreadyExistException();
         }
 
+        String encPwd = encoder.encode(userRequest.getPassword());
+
         LocalDateTime localDateTime = LocalDateTime.now();
 
-        Integer testOxygen = 100;   //산소포화도 테스트 데이터
+        Integer testOxygen = 90;   //산소포화도 테스트 데이터
+        Integer testHeartRate = 80; //심박수 테스트 데이터
 
-        User user = User.builder()
+        Users users = Users.builder()
                 .loginId(userRequest.getLoginId())
-                .password(userRequest.getPassword())
-                .userName(userRequest.getUserName())
+                .password(encPwd)
+                .name(userRequest.getUserName())
                 .birthDate(userRequest.getBirthDate())
                 .isMale(userRequest.getIsMale())
-                .location(userRequest.getLocation())
+                .heartRate(testHeartRate)
                 .oxygenSaturation(testOxygen)
                 .symptom(userRequest.getSymptom())
                 .createDateTime(localDateTime)
                 .updateDateTime(localDateTime)
                 .build();
 
-        userRepository.save(user);
+        userRepository.save(users);
     }
 
     // 회원 조회 기능
     //  로그인ID 로 조회하기.
     public UserResponse showUserInfoById(String loginId){
 
-        User user = userRepository.findByLoginId(loginId).orElseThrow();
+        Users users = userRepository.findByLoginId(loginId).orElseThrow();
 
         return UserResponse.builder()
-                .loginId(user.getLoginId())
-                .userName(user.getUserName())
-                .birthDate(user.getBirthDate())
-                .isMale(user.getIsMale())
-                .location(user.getLocation())
-                .symptom(user.getSymptom())
+                .loginId(users.getLoginId())
+                .userName(users.getName())
+                .birthDate(users.getBirthDate())
+                .isMale(users.getIsMale())
+                .symptom(users.getSymptom())
                 .build();
     }
 
     // 회원 조회 기능
     //  모든 회원 조회하기.
     public List<UserResponse> showUserInfoAll(){
-        List<User> getUsers = userRepository.findAll();
+        List<Users> getUsers = userRepository.findAll();
 
         List<UserResponse> getUserInfo = getUsers.stream()
                 .map(user -> UserResponse.builder()
                         .loginId(user.getLoginId())
-                        .userName(user.getUserName())
+                        .userName(user.getName())
                         .birthDate(user.getBirthDate())
                         .isMale(user.getIsMale())
-                        .location(user.getLocation())
                         .symptom(user.getSymptom())
                         .build())
                 .collect(Collectors.toList());
@@ -103,9 +110,9 @@ public class UserService {
         }
 
         if(request.getNewPassword().equals(request.getAgainNewPassword())){
-            User user = userRepository.findByLoginId(request.getLoginId()).get();
+            Users users = userRepository.findByLoginId(request.getLoginId()).get();
             LocalDateTime now = LocalDateTime.now();
-            user.updatePassword(request.getNewPassword(), now);
+            users.updatePassword(request.getNewPassword(), now);
         }
     }
 
@@ -119,25 +126,28 @@ public class UserService {
             throw new PasswordNotCorrectException();
         }
 
-        User user = userRepository.findByLoginId(request.getLoginId()).get();
+        Users users = userRepository.findByLoginId(request.getLoginId()).get();
 
-        userRepository.delete(user);
+        userRepository.delete(users);
     }
 
     // 로그인 ID 로 회원 찾기.
-    public User findUserByLoginId(String userLoginId) {
+    public Users findUserByLoginId(String userLoginId) {
 
         return userRepository.findByLoginId(userLoginId).orElse(null);
 
     }
 
     // 아이디 비밀번호 체크. 오류시 exception 발생
+    @Transactional
     public void checkUserInfo(LoginRequest request){
         if(!userRepository.existsByLoginId(request.getLoginId())){
             throw new UserNotFoundException();
         }
 
-        else if(!request.getPassword().equals(userRepository.findByLoginId(request.getLoginId()).get().getPassword())){
+        Users users = findUserByLoginId(request.getLoginId());
+
+        if(!encoder.matches(request.getPassword(), users.getPassword())){
             throw new PasswordNotCorrectException();
         }
 

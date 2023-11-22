@@ -19,5 +19,4 @@ public class LoginRequest {
         this.loginId = loginId;
         this.password = password;
     }
-
 }

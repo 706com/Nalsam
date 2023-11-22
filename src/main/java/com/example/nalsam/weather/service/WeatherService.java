@@ -7,6 +7,7 @@ import com.example.nalsam.weather.dto.WeatherDto;
 import com.example.nalsam.weather.dto.WeatherForecastDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
@@ -40,11 +41,9 @@ public class WeatherService {
         System.out.println("1시간전 : " + time);
         System.out.println("date : "+date);
 
-
         var WeatherInfo = currentWeatherApiCaller.getCurrentWeather(date,time,nx,ny,sido,gu);
         return WeatherInfo;
     }
-
     public WeatherForecastDto getWeatherForecastInfo(String nx, String ny, String sido, String gu) {
 
         // 현재 날짜와 시간 가져오기
@@ -54,7 +53,6 @@ public class WeatherService {
         // 출력 형식 지정
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
         DateTimeFormatter hourFormatter = DateTimeFormatter.ofPattern("HHmm");
-
 
         // 02시를 기준으로 분기
         LocalDateTime resultDateTime;
@@ -77,7 +75,6 @@ public class WeatherService {
         var WeatherInfo = weatherForecastApiCaller.getWeatherForecast(date,hour,nx,ny,sido,gu);
         return WeatherInfo;
     }
-
     public LocationInfo findNearestLocation(Double latitude,Double longitude){
         List<LocationInfo> locationInfos = locationInfoService.getAllLocationInfo();
 
@@ -94,7 +91,7 @@ public class WeatherService {
 
         return nearestLocation;
     }
-    private double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
+    public double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
         final int R = 6371;
 
         double latDistance = Math.toRadians(lat2 - lat1);
