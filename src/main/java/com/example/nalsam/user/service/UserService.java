@@ -71,6 +71,8 @@ public class UserService {
 
         Users users = userRepository.findByLoginId(loginId).orElseThrow();
 
+        findRole(loginId);
+
         return UserResponse.builder()
                 .loginId(users.getLoginId())
                 .userName(users.getName())
@@ -78,6 +80,13 @@ public class UserService {
                 .isMale(users.getIsMale())
                 .symptom(users.getSymptom())
                 .build();
+    }
+
+    public void findRole(String loginId){
+        Users user = userRepository.findByLoginId(loginId).get();
+        for(String x : user.getRoles()){
+            System.out.println(x+" ");
+        }
     }
 
     // 회원 조회 기능

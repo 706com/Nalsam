@@ -5,8 +5,11 @@ import com.example.nalsam.user.dto.request.LoginRequest;
 import com.example.nalsam.user.dto.request.UserRequest;
 import com.example.nalsam.user.dto.response.UserResponse;
 import com.example.nalsam.user.exception.UserAlreadyExistException;
+import com.example.nalsam.user.exception.UserNotFoundException;
 import com.example.nalsam.user.repository.UserRepository;
 import com.example.nalsam.user.service.UserService;
+import java.util.ArrayList;
+import java.util.Optional;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -93,9 +96,20 @@ public class LoginService {
                 .symptom(userRequest.getSymptom())
                 .createDateTime(localDateTime)
                 .updateDateTime(localDateTime)
+//                .roles(new ArrayList<>())
                 .build();
 
         userRepository.save(users);
+
+        addRolesToUser(users.getUserId());
+    }
+
+
+    public void addRolesToUser(Long userId) {
+        Users user = userRepository.findById(userId).get();
+        user.getRoles().add("USER");
+
+        userRepository.save(user);
     }
 
     // jwt 토큰 확인 후 객체 전달
