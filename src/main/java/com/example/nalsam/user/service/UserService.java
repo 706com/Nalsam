@@ -27,14 +27,6 @@ public class UserService {
 
 //    private final BCryptPasswordEncoder encoder;
 
-
-    //회원 저장 기능 test
-    public Users getUserTest(TestRequest request){
-        Users users = userRepository.findByLoginId(request.getLoginId()).get();
-
-        return users;
-    }
-
     // 회원 저장 기능
     public void saveUserProfile(UserRequest userRequest){
 
