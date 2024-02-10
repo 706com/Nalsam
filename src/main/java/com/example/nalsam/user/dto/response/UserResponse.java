@@ -1,17 +1,15 @@
 package com.example.nalsam.user.dto.response;
 
 
-import lombok.AccessLevel;
+
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder
+@AllArgsConstructor
 public class UserResponse {
 
     private String loginId;
@@ -28,19 +26,5 @@ public class UserResponse {
 
     private Integer oxygenSaturation;
 
-
-    @Builder
-    public UserResponse(String loginId, String userName,String birthDate, Integer isMale, String symptom,Integer heartRate, Integer oxygenSaturation) {
-        this.loginId = loginId;
-        this.userName = userName;
-        this.birthDate = birthDate;
-        this.isMale = isMale;
-        this.symptom = symptom;
-        this.heartRate = heartRate;
-        this.oxygenSaturation = oxygenSaturation;
-    }
-
-//    public static UserResponse of(){
-//
-//    }
 }
+
