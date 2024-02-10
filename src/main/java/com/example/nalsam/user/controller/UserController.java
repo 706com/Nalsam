@@ -21,9 +21,9 @@ public class UserController {
 
     // < 회원 저장 API >
     @PostMapping("")
-    public ResponseEntity<Void> createUser(@RequestBody UserRequest userRequest){
-        userService.saveUserProfile(userRequest);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<UserResponse> createUser(@RequestBody UserRequest userRequest){
+        UserResponse response = userService.saveUserProfile(userRequest);
+        return ResponseEntity.ok().body(response);
     }
 
     // < 회원 조회 API >

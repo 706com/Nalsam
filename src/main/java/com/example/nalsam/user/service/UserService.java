@@ -28,7 +28,7 @@ public class UserService {
 //    private final BCryptPasswordEncoder encoder;
 
     // 회원 저장 기능
-    public void saveUserProfile(UserRequest userRequest){
+    public UserResponse saveUserProfile(UserRequest userRequest){
 
         if(userRepository.existsByLoginId(userRequest.getLoginId())){
             throw new UserAlreadyExistException();
@@ -41,7 +41,7 @@ public class UserService {
         Integer testOxygen = 90;   //산소포화도 테스트 데이터
         Integer testHeartRate = 80; //심박수 테스트 데이터
 
-        Users users = Users.builder()
+        Users user = Users.builder()
                 .loginId(userRequest.getLoginId())
                 .password(encPwd)
                 .name(userRequest.getUserName())
@@ -54,7 +54,17 @@ public class UserService {
                 .updateDateTime(localDateTime)
                 .build();
 
-        userRepository.save(users);
+        userRepository.save(user);
+
+        return UserResponse.builder()
+                .loginId(user.getLoginId())
+                .userName(user.getName())
+                .birthDate(user.getBirthDate())
+                .isMale(user.getIsMale())
+                .symptom(user.getSymptom())
+                .heartRate(user.getHeartRate())
+                .oxygenSaturation(user.getOxygenSaturation())
+                .build();
     }
 
     // 회원 조회 기능
