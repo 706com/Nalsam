@@ -144,23 +144,18 @@ public class UserService {
 
     // 로그인 ID 로 회원 찾기.
     public Users findUserByLoginId(String userLoginId) {
-
         return userRepository.findByLoginId(userLoginId).orElse(null);
-
     }
 
     // 아이디 비밀번호 체크. 오류시 exception 발생
-    @Transactional
     public void checkUserInfo(LoginRequest request){
         if(!userRepository.existsByLoginId(request.getLoginId())){
             throw new UserNotFoundException();
         }
-
         Users users = findUserByLoginId(request.getLoginId());
 
         if(!encoder.matches(request.getPassword(), users.getPassword())){
             throw new PasswordNotCorrectException();
         }
-
     }
 }
