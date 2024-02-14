@@ -23,14 +23,10 @@ public class LoginController {
 
     private final JwtTokenProvider jwtTokenProvider;
 
-    @PostMapping("/login") // http 서블릿 세션 로그인
+    @PostMapping("/login")
     public ResponseEntity<JwtToken> login(@RequestBody LoginRequest loginRequest) {
-
-//        System.out.println("1");
         JwtToken token = loginService.login(loginRequest);
-
         return ResponseEntity.ok().body(token);
-
     }
 
     // < 회원 저장 API >
@@ -41,11 +37,9 @@ public class LoginController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/home") // http 서블릿 세션 로그아웃
+    @PostMapping("/home")
     public ResponseEntity<UserResponse> home(HttpServletRequest request){
-
         String accessToken = jwtTokenProvider.getAccessToken(request);
-
         return ResponseEntity.ok().body(loginService.getUserResponse(accessToken));
     }
 
@@ -55,14 +49,4 @@ public class LoginController {
 
         return ResponseEntity.ok().body(loginService.mainTest());
     }
-
-
-
-//    @PostMapping("/main2") // http 서블릿 세션 로그아웃
-//    public ResponseEntity<UserResponse> main2(HttpServletRequest request){
-//
-//        request.getHeader("Authorization");
-//
-//        return ResponseEntity.ok().body(loginService.main2());
-//    }
 }
