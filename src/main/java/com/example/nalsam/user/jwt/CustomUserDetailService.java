@@ -18,14 +18,12 @@ import org.springframework.stereotype.Service;
 public class CustomUserDetailService implements UserDetailsService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
 
+    //시큐리티 세션 -> Authentication -> UserDetails
+    //시큐리티 세션(내부 Authentication객체(내부 UserDetails(User)))
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//        System.out.println("aaa");
         log.info("username : "+username);
-//        User user =  userRepository.findByLoginId(username).orElseThrow(UserNotFoundException::new);
-//        return user;
         return userRepository.findByLoginId(username)
                 .map(this::createUserDetails)
                 .orElseThrow(() -> new UsernameNotFoundException("해당하는 유저를 찾을 수 없습니다."));

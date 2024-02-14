@@ -49,19 +49,15 @@ public class JwtTokenProvider {
 
     public JwtTokenProvider(@Value("${jwt-secret-key}") String secretKey,
                             @Value("${jwt-expiration-hours}")long expirationHours,
-                            @Value("${jwt-issuer}") String issuer
-                            ){
-//                            CustomUserDetailService customUserDetailService) {
-//        this.secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
+                            @Value("${jwt-issuer}") String issuer){
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         this.secretKey = Keys.hmacShaKeyFor(keyBytes);
         this.expirationHours = expirationHours;
         this.issuer = issuer;
-//        this.customUserDetailService = customUserDetailService;
     }
 
     //jwt 생성
-    public JwtToken createToken(Authentication authentication){
+    public Token createToken(Authentication authentication){
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
@@ -85,7 +81,7 @@ public class JwtTokenProvider {
                 .signWith(secretKey,SignatureAlgorithm.HS256)
                 .compact();
 
-        return JwtToken.builder()
+        return Token.builder()
                 .grantType("Bearer")
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
@@ -113,7 +109,6 @@ public class JwtTokenProvider {
     // 토큰 유효성(access) 및 만료일자 확인
     public boolean validateToken(String jwtToken){
         try{
-//            Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
             Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(jwtToken);
             return true;
         } catch (ExpiredJwtException e){
@@ -128,7 +123,6 @@ public class JwtTokenProvider {
 
     private Claims parseClaims(String accessToken){
         try{
-//            return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(accessToken).getBody();
             return Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(accessToken).getBody();
         } catch (ExpiredJwtException e){
             return e.getClaims();
@@ -142,8 +136,6 @@ public class JwtTokenProvider {
     //토큰에서 회원 추출
     public String getUserLoginId(String token){
         String accessToken = token.split("Bearer ")[1];
-//        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
         return Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(accessToken).getBody().getSubject();
     }
-
 }
