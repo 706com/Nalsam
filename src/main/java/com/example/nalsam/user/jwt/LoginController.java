@@ -24,8 +24,8 @@ public class LoginController {
     private final JwtTokenProvider jwtTokenProvider;
 
     @PostMapping("/login")
-    public ResponseEntity<JwtToken> login(@RequestBody LoginRequest loginRequest) {
-        JwtToken token = loginService.login(loginRequest);
+    public ResponseEntity<Token> login(@RequestBody LoginRequest loginRequest) {
+        Token token = loginService.login(loginRequest);
         return ResponseEntity.ok().body(token);
     }
 

@@ -52,7 +52,7 @@ public class LoginService {
         3. 검증된 인증 정보로 JWT 토큰 생성
     */
 
-    public JwtToken login(LoginRequest request){
+    public Token login(LoginRequest request){
         // 계정 로그인 정보 확인 (아이디 패스워드)
         userService.checkUserInfo(request);
         // Authentication 토큰 객체 생성 : [SecurityFilterChain요소] -> [Authentication]
@@ -60,7 +60,7 @@ public class LoginService {
         //Authentication 토큰객체 검증 : [Authentication] -> [AuthenticationManager]
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
         //검증된 인증정보로 jwt 생성
-        JwtToken token = jwtTokenProvider.createToken(authentication);
+        Token token = jwtTokenProvider.createToken(authentication);
         return token;
     }
 
