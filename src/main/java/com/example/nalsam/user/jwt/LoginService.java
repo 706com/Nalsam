@@ -53,23 +53,15 @@ public class LoginService {
     */
 
     public JwtToken login(LoginRequest request){
-
-//        System.out.println("2");
         // 계정 로그인 정보 확인 (아이디 패스워드)
         userService.checkUserInfo(request);
-//        System.out.println("3");
-//        String encPwd = encoder.encode(request.getPassword());
-        // Authentication 객체 생성
+        // Authentication 토큰 객체 생성 : [SecurityFilterChain요소] -> [Authentication]
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(request.getLoginId(),request.getPassword());
-//        System.out.println("4");
-        //검증
+        //Authentication 토큰객체 검증 : [Authentication] -> [AuthenticationManager]
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-//        System.out.println("5");
         //검증된 인증정보로 jwt 생성
         JwtToken token = jwtTokenProvider.createToken(authentication);
-//        System.out.println("6");
         return token;
-
     }
 
     // 회원가입
