@@ -26,8 +26,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 따라서 이 부분에 대한 예외 처리가 필요하다.
  */
 
-@Configuration
-@EnableWebSecurity
+@Configuration  //메모리에 올리기
+@EnableWebSecurity  //스프링 시큐리티 활성화 : 스프링 시큐리티 필터가 스프링 필터체인에 등록됨
 public class WebSecurityConfig {
 
     private JwtTokenProvider jwtTokenProvider;
