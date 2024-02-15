@@ -65,21 +65,6 @@ public class Users implements UserDetails{
     private List<String> roles = new ArrayList<>();
 
 
-//    @Builder
-//    public Users(Long userId, String loginId, String password, String name, String birthDate, Integer isMale, Integer heartRate, Integer oxygenSaturation, String symptom, LocalDateTime createDateTime, LocalDateTime updateDateTime) {
-//        this.userId = userId;
-//        this.loginId = loginId;
-//        this.password = password;
-//        this.name = name;
-//        this.birthDate = birthDate;
-//        this.isMale = isMale;
-//        this.heartRate = heartRate;
-//        this.oxygenSaturation = oxygenSaturation;
-//        this.symptom = symptom;
-//        this.createDateTime = createDateTime;
-//        this.updateDateTime = updateDateTime;
-//    }
-
     public void updatePassword(String password, LocalDateTime updateDateTime) {
         this.password = password;
         this.updateDateTime = updateDateTime;
