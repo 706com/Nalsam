@@ -23,7 +23,6 @@ public class CustomUserDetailService implements UserDetailsService {
     //시큐리티 세션(내부 Authentication객체(내부 UserDetails(User)))
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        log.info("username : "+username);
         return userRepository.findByLoginId(username)
                 .map(this::createUserDetails)
                 .orElseThrow(() -> new UsernameNotFoundException("해당하는 유저를 찾을 수 없습니다."));
@@ -31,12 +30,9 @@ public class CustomUserDetailService implements UserDetailsService {
 
     // 해당하는 User 의 데이터가 존재한다면 UserDetails 객체로 만들어서 리턴
     private UserDetails createUserDetails(Users users) {
-//        System.out.println("bbb");
-//        log.info("권한정보 : "+ users.getAuthorities());
         log.info(users.getRoles().get(0));
         log.info(users.getUsername());
         log.info(users.getPassword());
-//        log.info(passwordEncoder.encode(users.getPassword()));
 //        return User.builder()
 //                .username(users.getUsername())
 //                .password(passwordEncoder.encode(users.getPassword()))
