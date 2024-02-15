@@ -39,7 +39,8 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
             // == 과정이 끝나면, 이 유저는 토큰이 유효한 유저임이 증명되고 SecurityContext 에 저장
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
-        filterChain.doFilter(request,response);
+        //해당 필터에서 처리하고 다시 다음 필터로 넘겨주는 doFilter 호출을 해줘야합니다.
+        filterChain.doFilter(request,response); // 다음 필터로 넘어가라는 의미
     }
 
     // Request의 Header에서 jwt 가져오기.
