@@ -1,4 +1,4 @@
-# 대기질 및 건강 데이터 융복합형  사회적 약자 맞춤형 외출 안내 서비스
+## 대기질 및 건강 데이터 융복합형 사회적 약자 맞춤형 외출 안내 서비스
 
 <div align="center">
 <img src="https://github.com/706com/Nalsam/assets/104816530/9be9f2b7-c760-4561-8ddb-4309dac44d26" width=500>
@@ -17,9 +17,8 @@
 
 ### 프로젝트 소개
 
-사회적 약자(기저 질환자)의 건강(질병, 나이, 성별, 산소포화도)를 바탕으로 사용자
-거주 동네의 지역별 대기질, 날씨 등의 데이터를 융복합 분석하여 개인 맞춤형
-외출 안내를 해주는 서비스입니다.
+사회적 약자(기저 질환자)의 건강(질병, 나이, 성별, 산소포화도)를 바탕으로 사용자 거주 동네의   
+지역별 대기질, 날씨 등의 데이터를 융복합 분석하여 개인 맞춤형 외출 안내를 해주는 서비스
 
 ### 개발 배경 및 필요성
 
@@ -28,9 +27,9 @@
 
 ### 기대 효과
 
-- 사회적 약자(고령자, 호흡기질환자)에게 효과적이면서 개인 맞춤형인 외출 안내 서비스를 제공.
-- 사용자에게 대기 오염의 노출을 최소화하고 관련 건강 문제의 위험성을 줄여줌으로써 삶의 질 향상을 기대.
-- 녹색 환경에 주의를 기울이는 현 시대에서 건강한 삶을 위해 대중들이 관심을 가지는 사회 분위기 조성. 
+- 사회적 약자(고령자, 호흡기질환자)에게 효과적이면서 개인 맞춤형인 외출 안내 서비스를 제공
+- 사용자에게 대기 오염의 노출을 최소화하고 관련 건강 문제의 위험성을 줄여줌으로써 삶의 질 향상을 기대
+- 녹색 환경에 주의를 기울이는 현 시대에서 건강한 삶을 위해 대중들이 관심을 가지는 사회 분위기 조성
 
 ---
 
@@ -43,6 +42,7 @@
 - **Infra** : `AWS-Cloud (EC2 - Ubuntu)` , `RDS` , `Nginx`, `SSL`
 - **Design Pattern** : `MVC`, `Builder`
 ---
+
 ## 화면 구성 📺
 | 메인 페이지  |  소개 페이지   |
 | :-------------------------------------------: | :------------: |
@@ -71,68 +71,217 @@
 
 - 
 
+## Versioning ✅
+
+### 기능 구현 Ver1.0 
+#### [ 2023.03 ~ 2023.10 ]
+
+|                 기능                 |  기간  | 내용  |
+|:----------------------------------:|:----:|:---:|
+|    |  |     |
+|    |  |     |
+|  |  |     |
+
+### 기능 구현 Ver2.0 
+#### [2024.01 ~ ]
+
+|                 기능                 |  기간  | 내용  |
+|:----------------------------------:|:----:|:---:|
+|    |  |     |
+|    |  |     |
+|  |  |     |
 ---
 ## Architecture
 
 ### 디렉토리 구조
-```bash
-├── README.md
-├── package-lock.json
-├── package.json
-├── strapi-backend : 
-│   ├── README.md
-│   ├── api : db model, api 관련 정보 폴더
-│   │   ├── about
-│   │   ├── course
-│   │   └── lecture
-│   ├── config : 서버, 데이터베이스 관련 정보 폴더
-│   │   ├── database.js
-│   │   ├── env : 배포 환경(NODE_ENV = production) 일 때 설정 정보 폴더
-│   │   ├── functions : 프로젝트에서 실행되는 함수 관련 정보 폴더
-│   │   └── server.js
-│   ├── extensions
-│   │   └── users-permissions : 권한 정보
-│   ├── favicon.ico
-│   ├── package-lock.json
-│   ├── package.json
-│   └── public
-│       ├── robots.txt
-│       └── uploads : 강의 별 사진
-└── voluntain-app : 프론트엔드
-    ├── README.md
-    ├── components
-    │   ├── CourseCard.js
-    │   ├── Footer.js
-    │   ├── LectureCards.js
-    │   ├── MainBanner.js : 메인 페이지에 있는 남색 배너 컴포넌트, 커뮤니티 이름과 슬로건을 포함.
-    │   ├── MainCard.js
-    │   ├── MainCookieCard.js
-    │   ├── NavigationBar.js : 네비게이션 바 컴포넌트, _app.js에서 공통으로 전체 페이지에 포함됨.
-    │   ├── RecentLecture.js
-    │   └── useWindowSize.js
-    ├── config
-    │   └── next.config.js
-    ├── lib
-    │   ├── context.js
-    │   └── ga
-    ├── next.config.js
-    ├── package-lock.json
-    ├── package.json
-    ├── pages
-    │   ├── _app.js
-    │   ├── _document.js
-    │   ├── about.js
-    │   ├── course
-    │   ├── index.js
-    │   ├── lecture
-    │   ├── newcourse
-    │   ├── question.js
-    │   └── setting.js
-    ├── public
-    │   ├── favicon.ico
-    │   └── logo_about.png
-    └── styles
-        └── Home.module.css
+
+```aidl
+├─main
+│  ├─generated
+│  ├─java
+│  │  └─com
+│  │      └─example
+│  │          └─nalsam
+│  │              │  NalsamApplication.java
+│  │              │  
+│  │              ├─airquality
+│  │              │  ├─api
+│  │              │  │      AirQualityApi.java
+│  │              │  │      AirQualityApiCaller.java
+│  │              │  │      AirQualityData.java
+│  │              │  │      
+│  │              │  ├─controller
+│  │              │  │      AirQualityController.java
+│  │              │  │      
+│  │              │  ├─domain
+│  │              │  │      StationLocation.java
+│  │              │  │      
+│  │              │  ├─dto
+│  │              │  │      AirQualityInfo.java
+│  │              │  │      
+│  │              │  ├─repository
+│  │              │  │      StationLocationRepository.java
+│  │              │  │      
+│  │              │  ├─service
+│  │              │  │      AirQualityService.java
+│  │              │  │      StationLocationService.java
+│  │              │  │      
+│  │              │  └─util
+│  │              │          AirQualityGrade.java
+│  │              │          AirQualityGradeUtil.java
+│  │              │          DateUtil.java
+│  │              │          
+│  │              ├─arduino
+│  │              │  ├─controller
+│  │              │  │      ArduinoController.java
+│  │              │  │      
+│  │              │  ├─domain
+│  │              │  │      Arduino.java
+│  │              │  │      HealthData.java
+│  │              │  │      
+│  │              │  ├─repository
+│  │              │  │      ArduinoRepository.java
+│  │              │  │      
+│  │              │  └─service
+│  │              │          ArduinoService.java
+│  │              │          
+│  │              ├─chatbot
+│  │              │  ├─controller
+│  │              │  │      ChatController.java
+│  │              │  │      
+│  │              │  ├─domain
+│  │              │  │      Choice.java
+│  │              │  │      Message.java
+│  │              │  │      Usage.java
+│  │              │  │      
+│  │              │  ├─dto
+│  │              │  │  ├─request
+│  │              │  │  │      AirQualityRequest.java
+│  │              │  │  │      ChatRequest.java
+│  │              │  │  │      HealthRequest.java
+│  │              │  │  │      PlaceRecommend.java
+│  │              │  │  │      QuestionRequest.java
+│  │              │  │  │      SymtomCaution.java
+│  │              │  │  │      
+│  │              │  │  └─response
+│  │              │  │          ChatResponse.java
+│  │              │  │          
+│  │              │  ├─infrastructure
+│  │              │  │      ChatCompletionClient.java
+│  │              │  │      
+│  │              │  └─service
+│  │              │          ChatCompletionService.java
+│  │              │          ChatService.java
+│  │              │          
+│  │              ├─config
+│  │              │      WebMvcConfig.java
+│  │              │      WebSecurityConfig.java
+│  │              │      
+│  │              ├─convergence
+│  │              │  ├─controller
+│  │              │  │      ConvergenceController.java
+│  │              │  │      
+│  │              │  ├─domain
+│  │              │  │      Convergence.java
+│  │              │  │      
+│  │              │  ├─dto
+│  │              │  │      ConvergenceData.java
+│  │              │  │      ConvergenceRequest.java
+│  │              │  │      ConvergenceResponse.java
+│  │              │  │      
+│  │              │  ├─repository
+│  │              │  │      ConvergenceRepository.java
+│  │              │  │      
+│  │              │  └─service
+│  │              │          AirQualityScore.java
+│  │              │          ConvergenceService.java
+│  │              │          HealthScore.java
+│  │              │          StatusScore.java
+│  │              │          WeatherScore.java
+│  │              │          
+│  │              ├─exception
+│  │              │      GlobalExceptionHandler.java
+│  │              │      
+│  │              ├─user
+│  │              │  ├─controller
+│  │              │  │      UserController.java
+│  │              │  │      
+│  │              │  ├─domain
+│  │              │  │      Users.java
+│  │              │  │      
+│  │              │  ├─dto
+│  │              │  │  │  SessionConst.java
+│  │              │  │  │  
+│  │              │  │  ├─request
+│  │              │  │  │      LoginRequest.java
+│  │              │  │  │      UserDeletionRequest.java
+│  │              │  │  │      UserPasswordRequest.java
+│  │              │  │  │      UserRequest.java
+│  │              │  │  │      
+│  │              │  │  └─response
+│  │              │  │          UserResponse.java
+│  │              │  │          
+│  │              │  ├─exception
+│  │              │  │      PasswordNotCorrectException.java
+│  │              │  │      UserAlreadyExistException.java
+│  │              │  │      UserNotFoundException.java
+│  │              │  │      
+│  │              │  ├─jwt
+│  │              │  │      CustomUserDetailService.java
+│  │              │  │      JwtAuthenticationFilter.java
+│  │              │  │      JwtTokenProvider.java
+│  │              │  │      LoginController.java
+│  │              │  │      LoginService.java
+│  │              │  │      Token.java
+│  │              │  │      
+│  │              │  ├─repository
+│  │              │  │      UserRepository.java
+│  │              │  │      
+│  │              │  └─service
+│  │              │          UserService.java
+│  │              │          
+│  │              └─weather
+│  │                  ├─api
+│  │                  │      CurrentWeatherApi.java
+│  │                  │      CurrentWeatherApiCaller.java
+│  │                  │      CurrentWeatherData.java
+│  │                  │      WeatherForecastApi.java
+│  │                  │      WeatherForecastApiCaller.java
+│  │                  │      WeatherForecastData.java
+│  │                  │      
+│  │                  ├─controller
+│  │                  │      WeatherController.java
+│  │                  │      
+│  │                  ├─domain
+│  │                  │      LocationInfo.java
+│  │                  │      
+│  │                  ├─dto
+│  │                  │      WeatherDto.java
+│  │                  │      WeatherForecastDto.java
+│  │                  │      
+│  │                  ├─repository
+│  │                  │      LocaionInfoRepository.java
+│  │                  │      
+│  │                  ├─service
+│  │                  │      LocationInfoService.java
+│  │                  │      WeatherService.java
+│  │                  │      
+│  │                  └─util
+│  │                          WeatherCategory.java
+│  │                          WeatherCategoryUtil.java
+│  │                          
+│  └─resources
+│      │  application-API-KEY.properties
+│      │  application.properties
+│      │  
+│      └─static
+└─test
+    └─java
+        └─com
+            └─example
+                └─nalsam
+                        NalsamApplicationTests.java
+                        
 
 ```
 
