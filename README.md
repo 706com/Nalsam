@@ -95,7 +95,7 @@
 
 ### 디렉토리 구조
 
-```aidl
+```bash
 ├─main
 │  ├─generated
 │  ├─java
