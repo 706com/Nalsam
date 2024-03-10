@@ -22,7 +22,9 @@ public class AirQualityApiCaller {
     private String SERVICE_KEY;
 
     public AirQualityApiCaller() {
+        // 역직렬화 과정
         ObjectMapper objectMapper = new ObjectMapper();
+        // JSON의 모든 데이터를 파싱하는 것이 아닌 내가 필요로 하는 데이터, 즉 내가 필드로 선언한 데이터들만 파싱하도록 설정
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -32,7 +34,6 @@ public class AirQualityApiCaller {
 
         this.AirQualityApi = retrofit.create(AirQualityApi.class);
     }
-
 
     public AirQualityInfo getAir(String sidoCode){
         try {
