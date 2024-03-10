@@ -21,16 +21,15 @@ public class AirQualityService {
     public AirQualityInfo getAirQualityInfo(Double latitude, Double longitude,String dateHourString ) {
 
         StationLocation nearestStation = findNearestStation(latitude, longitude);
+        // 1. 642개 측정소명에서 가장 가까운 측정소명의 주소(sidoName) 추출
+        // 2. 해당 주소로 searchByGu : sidoName을 통한 API 호출
         String sidoCode = nearestStation.getAddress().substring(0,2);
         var airQualityInfo = AirQualityApiCaller.getAir(sidoCode);
-        if (nearestStation != null) {
-            return airQualityInfo.searchByGu(nearestStation.getStationName());
-        }
-        return airQualityInfo;
+        // 뽑아온 여러개의 지역명 중 측정소명으로 최종 추출
+        return airQualityInfo.searchByGu(nearestStation.getStationName());
     }
     public StationLocation findNearestStation(Double latitude, Double longitude){
         List<StationLocation> stationLocations = stationLocationService.getAllStationLocations();
-
         StationLocation nearestStation = null;
         double minDistance = Double.MAX_VALUE;
 
@@ -42,7 +41,7 @@ public class AirQualityService {
                 nearestStation = location;
             }
         }
-
+//        log.info(nearestStation.getStationName()+" "+nearestStation.getAddress());
         return nearestStation;
     }
 
